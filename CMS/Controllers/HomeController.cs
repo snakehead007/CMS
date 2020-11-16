@@ -30,7 +30,7 @@ namespace CMS.Controllers
                         Name = "Course A",
                         Code = "CAD-1",
                         Description = "Course A semester 1",
-                        ImageLocation = "/images/course.jpg",
+                        ImgLoc = "/images/placeholder.jpg",
                         Semester = 1
                     },
                     new CourseModel
@@ -38,7 +38,7 @@ namespace CMS.Controllers
                         Name = "Course B",
                         Code = "CBD-2",
                         Description = "Course B semester 2",
-                        ImageLocation = "/images/course.jpg",
+                        ImgLoc = "/images/placeholder.jpg",
                         Semester = 2
                     }
                 }
