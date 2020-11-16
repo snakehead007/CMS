@@ -24,6 +24,13 @@ a {
   border-color: #1861ac;
 }
 
+/*
+    Push menu down
+*/
+#toggleBar {
+    margin-top: 2%;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -59,8 +66,8 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    /*margin-bottom: 60px;*/
 }
 .footer {
   position: absolute;
