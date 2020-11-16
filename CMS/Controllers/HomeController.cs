@@ -20,7 +20,30 @@ namespace CMS.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            _logger.LogDebug("Retrieving list of courses.");
+            OverviewModel overviewModel = new OverviewModel
+            {
+                Courses = new List<CourseModel>
+                {
+                    new CourseModel
+                    {
+                        Name = "Course A",
+                        Code = "CAD-1",
+                        Description = "Course A semester 1",
+                        ImageLocation = "/images/course.jpg",
+                        Semester = 1
+                    },
+                    new CourseModel
+                    {
+                        Name = "Course B",
+                        Code = "CBD-2",
+                        Description = "Course B semester 2",
+                        ImageLocation = "/images/course.jpg",
+                        Semester = 2
+                    }
+                }
+            };
+            return View(overviewModel);
         }
 
         public IActionResult Privacy()

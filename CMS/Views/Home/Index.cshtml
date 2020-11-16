@@ -1,8 +1,21 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model OverviewModel
+@{
+    ViewData["Title"] = "Overview";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1 class="ui block header">Overview Courses</h1>
+<div class="ui link cards">
+    @foreach (var course in Model.Courses)
+    {
+        <div class="card">
+            <div class="image"><img src="@course.ImageLocation"></div>
+            <div class="content">
+                <div class="header">@course.Name</div>
+                <div class="meta"><a>@course.Code</a></div>
+                <div class="description">@course.Description</div>
+            </div>
+            <div class="extra content">
+                <span class="right floated">Semester @course.Semester</span>
+            </div>
+        </div>
+    }
 </div>
