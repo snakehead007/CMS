@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,7 +32,7 @@ namespace CMS.Controllers
                     Name = course.Name,
                     Code = course.Code,
                     Description = course.Description,
-                    Semester = course.Semester,
+                    Semester = course.Semester!=null?(int)course.Semester:-1,
                     ImgLoc = course.ImgLoc
                 }).ToList()
             };

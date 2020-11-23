@@ -8,25 +8,25 @@ namespace CMS.Models
 {
     public class OverviewModel
     {
-        private List<Course> courses;
+        private List<CourseModel> courses;
 
-        public List<Course> Courses { get { return this.courses;  } set { this.courses = value;  } }
+        public List<CourseModel> Courses { get { return this.courses;  } set { this.courses = value;  } }
 
         public OverviewModel()
         {
-            courses = new List<Course>();
+            courses = new List<CourseModel>();
         }
 
-        public OverviewModel(List<Course> courses)
+        public OverviewModel(List<CourseModel> courses)
         {
             this.courses = courses;
         }
 
-        public void addCourse(Course course) {
+        public void addCourse(CourseModel course) {
             courses.Add(course);
         }
 
-        public List<Course> GetCourses() {
+        public List<CourseModel> GetCourses() {
             return courses;
         }
     }
