@@ -31,29 +31,12 @@ namespace CMS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-<<<<<<< HEAD
 
-            if (!Configuration.GetValue<bool>("useInMemory") && Database.IsDatabaseOnline())
-            {
-                services.AddDbContext<DataContext>(o =>
-                    o.UseSqlServer(Configuration.GetValue<string>("SqlConnection"))
-                    );
-                ///TODO
-                //services.AddScoped<ICourse, Course>();
-            }
-            else
-            {
-                ///TODO
-                //services.AddSingleton<ICourse, CourseInMemory>();
-            }
-            
-
-=======
             services.AddDbContext<DataContext>(o =>
                 o.UseSqlServer(Configuration.GetValue<string>("SqlConnection"))
                 );
             services.AddScoped<ICourseRepository, CourseRepository>();
->>>>>>> develop
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
