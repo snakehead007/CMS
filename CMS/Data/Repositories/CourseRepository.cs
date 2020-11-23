@@ -17,7 +17,7 @@ namespace CMS.Data.Repositories
             this.db = context;
         }
 
-        public async Task<List<Course>> GetListAsync() {
+        public async Task<List<Course>> GetListAsync() {    
             List<Course> courses = await db.Courses.ToListAsync();
 
             return courses; 
