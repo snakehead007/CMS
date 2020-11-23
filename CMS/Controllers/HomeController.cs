@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using CMS.Models;
 using CMS.Interfaces.Repositories;
 using CMS.Data.Entities;
+using System;
 
 namespace CMS.Controllers
 {
@@ -33,7 +34,9 @@ namespace CMS.Controllers
                     Code = course.Code,
                     Description = course.Description,
                     Semester = course.Semester!=null?(int)course.Semester:-1,
-                    ImgLoc = course.ImgLoc
+                    ImgLoc = course.ImgLoc,
+                    StartDate = course.StartDate,
+                    EndDate = course.EndDate
                 }).ToList()
             };
             return View(overviewModel);
