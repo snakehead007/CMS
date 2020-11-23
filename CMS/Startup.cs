@@ -12,6 +12,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using CMS.Utils;
+using CMS.Data.Entities;
+using CMS.Data.interfaces;
 
 namespace CMS
 {
@@ -28,10 +31,12 @@ namespace CMS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             services.AddDbContext<DataContext>(o =>
                 o.UseSqlServer(Configuration.GetValue<string>("SqlConnection"))
                 );
             services.AddScoped<ICourseRepository, CourseRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

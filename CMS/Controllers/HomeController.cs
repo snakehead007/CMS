@@ -26,7 +26,17 @@ namespace CMS.Controllers
         {
             List<Course> courses = await _courseRepository.GetListAsync();
 
-            OverviewModel overviewModel = new OverviewModel(courses);
+            OverviewModel overviewModel = new OverviewModel
+            {
+                Courses = courses.Select(course => new CourseViewModel
+                {
+                    Name = course.Name,
+                    Code = course.Code,
+                    Description = course.Description,
+                    Semester = course.Semester,
+                    ImgLoc = course.ImgLoc
+                }).ToList()
+            };
             return View(overviewModel);
         }
 
