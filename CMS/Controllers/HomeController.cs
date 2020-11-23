@@ -6,49 +6,28 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CMS.Models;
+using CMS.Interfaces.Repositories;
+using CMS.Data.Entities;
 
 namespace CMS.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ICourseRepository _courseRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ICourseRepository courseRepository)
         {
             _logger = logger;
+            this._courseRepository = courseRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            _logger.LogDebug("Retrieving list of courses.");
-            OverviewModel overviewModel = new OverviewModel
-            {
-                Courses = new List<CourseModel>
-                {
-                    new CourseModel
-                    {
-                        Name = "Course A",
-                        Code = "CAD-1",
-                        Description = "Course A semester 1",
-                        ImgLoc = "/images/placeholder.jpg",
-                        Semester = 1
-                    },
-                    new CourseModel
-                    {
-                        Name = "Course B",
-                        Code = "CBD-2",
-                        Description = "Course B semester 2",
-                        ImgLoc = "/images/placeholder.jpg",
-                        Semester = 2
-                    }
-                }
-            };
+            List<Course> courses = await _courseRepository.GetListAsync();
+
+            OverviewModel overviewModel = new OverviewModel(courses);
             return View(overviewModel);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
