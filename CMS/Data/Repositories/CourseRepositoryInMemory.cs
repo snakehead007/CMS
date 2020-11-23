@@ -11,9 +11,9 @@ namespace CMS.Data.Repositories
     {
         private Dictionary<int, Course> _db;
 
-        public CourseRepositoryInMemory(Dictionary<int, Course> Db)
+        public CourseRepositoryInMemory()
         {
-            this._db = Db;
+            this._db = new Dictionary<int, Course>();
 
             //default test values
             _db.Add(0, new Course 
