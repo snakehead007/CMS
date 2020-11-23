@@ -3,11 +3,12 @@ using CMS.Data.Repositories;
 using CMS.Interfaces.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using System;
 
 namespace CMS
 {
@@ -25,11 +26,20 @@ namespace CMS
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<DataContext>(o =>
-                o.UseSqlServer(Configuration.GetValue<string>("SqlConnection"))
-                );
-            services.AddScoped<ICourseRepository, CourseRepository>();
+            bool useInMemory = Configuration.GetSection("RepositorySettings").GetValue<bool>("UseInMemoryRepository");
 
+            if (!useInMemory && IsDatabaseOnline()) 
+            {
+                services.AddDbContext<DataContext>(o =>
+                    o.UseSqlServer(Configuration.GetSection("RepositorySettings").GetValue<string>("SqlConnection"))
+                );
+                services.AddScoped<ICourseRepository, CourseRepository>();
+            }
+            else
+            {
+                services.AddSingleton<ICourseRepository, CourseRepositoryInMemory>();
+            }
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +68,17 @@ namespace CMS
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        public bool IsDatabaseOnline()
+        {
+            try {
+                SqlConnection connection = new SqlConnection(Configuration.GetSection("RepositorySettings").GetValue<string>("SqlConnection"));
+                connection.Open();
+                return true;
+            }
+            catch (Exception ignore) 
+            { return false; }
         }
     }
 }

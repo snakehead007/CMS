@@ -1,0 +1,62 @@
+﻿using CMS.Data.Entities;
+using CMS.Interfaces.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace CMS.Data.Repositories
+{
+    public class CourseRepositoryInMemory : ICourseRepository
+    {
+        private Dictionary<int, Course> _db;
+
+        public CourseRepositoryInMemory(Dictionary<int, Course> Db)
+        {
+            this._db = Db;
+
+            //default test values
+            _db.Add(0, new Course 
+            { 
+                CourseId = 0, 
+                Name = "Wiskunde", 
+                Code = "CBD-1", 
+                Description = "Statistieken", 
+                Semester = 1, 
+                ImgLoc = "/images/placeholder.jpg", 
+                StartDate = null, 
+                EndDate = null 
+            });
+
+            _db.Add(1, new Course 
+            { 
+                CourseId = 1, 
+                Name = "CMS", 
+                Code = "CMS-1", 
+                Description = "CMS", 
+                Semester = 2, 
+                ImgLoc = "/images/placeholder.jpg", 
+                StartDate = null, 
+                EndDate = null 
+            });
+
+            _db.Add(2, new Course
+            {
+                CourseId = 2,
+                Name = "Gip",
+                Code = "GIP-4",
+                Description = "gip 4",
+                Semester = 1,
+                ImgLoc = "/images/placeholder.jpg",
+                StartDate = null,
+                EndDate = null
+            });
+
+        }
+
+        public Task<List<Course>> GetListAsync()
+        {
+            return Task.Factory.StartNew(() => { return _db.Values.ToList(); }); //ContinueWith(x => _db.Values.ToList());
+        }
+    }
+}
