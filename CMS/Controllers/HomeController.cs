@@ -28,7 +28,7 @@ namespace CMS.Controllers
 
             OverviewModel overviewModel = new OverviewModel
             {
-                Courses = courses.Select(course => new CourseViewModel
+                Courses = courses.Select(course => new CourseModel
                 {
                     Name = course.Name,
                     Code = course.Code,
