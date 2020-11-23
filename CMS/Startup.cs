@@ -10,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using CMS.Utils;
+using CMS.Data.Entities;
+using CMS.Data.interfaces;
 
 namespace CMS
 {
@@ -26,9 +29,22 @@ namespace CMS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<DataContext>(o =>
-                o.UseSqlServer(Configuration.GetValue<string>("SqlConnection"))
-                );
+
+            if (!Configuration.GetValue<bool>("useInMemory") && Database.IsDatabaseOnline())
+            {
+                services.AddDbContext<DataContext>(o =>
+                    o.UseSqlServer(Configuration.GetValue<string>("SqlConnection"))
+                    );
+                ///TODO
+                //services.AddScoped<ICourse, Course>();
+            }
+            else
+            {
+                ///TODO
+                //services.AddSingleton<ICourse, CourseInMemory>();
+            }
+            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
