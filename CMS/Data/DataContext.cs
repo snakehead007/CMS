@@ -1,5 +1,6 @@
 ﻿using CMS.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,13 @@ namespace CMS.Data
         }
 
         public virtual DbSet<Course> Courses { get; set; }
+
+        private void ConfigureCourse(EntityTypeBuilder<Course> course)
+        {
+            //dbo.Courses
+            course.ToTable("Courses").HasKey(x => x.CourseId);
+            course.Property(x => x.CourseId).UseIdentityColumn();
+            course.HasIndex(x => x.Name);
+        }
     }
 }

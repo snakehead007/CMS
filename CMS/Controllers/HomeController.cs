@@ -24,25 +24,97 @@ namespace CMS.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<Course> courses = await _courseRepository.GetListAsync();
-
-            OverviewModel overviewModel = new OverviewModel
+            try
             {
-                Courses = courses.Select(course => new CourseModel
+                List<Course> courses = await _courseRepository.GetListAsync();
+
+                OverviewModel overviewModel = new OverviewModel
                 {
-                    Name = course.Name,
-                    Code = course.Code,
-                    Description = course.Description,
-                    Semester = course.Semester!=null?(int)course.Semester:-1,
-                    ImgLoc = course.ImgLoc,
-                    StartDate = course.StartDate,
-                    EndDate = course.EndDate
-                }).ToList()
-            };
-            return View(overviewModel);
+                    Courses = courses.Select(course => new CourseModel
+                    {
+                        Name = course.Name,
+                        Code = course.Code,
+                        Description = course.Description,
+                        Semester = course.Semester != null ? (int)course.Semester : -1,
+                        ImgLoc = course.ImgLoc,
+                        StartDate = course.StartDate,
+                        EndDate = course.EndDate
+                    }).ToList()
+                };
+                return View(overviewModel);
+            }
+            catch (Exception e) {
+                _logger.LogError(e, e.Message);
+                return View();
+            }
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [HttpGet]
+        public IActionResult AddCourse()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async  Task<IActionResult> AddCourse(CourseModel model)
+        {
+            try { 
+                if(model.StartDate >= model.EndDate)
+                {
+                    ModelState.AddModelError("Start", "Start date must be before End date.");
+                    ModelState.AddModelError("End", "End date must be before Start date.");
+                }
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                var course = new Course
+                {
+
+                    Name = model.Name,
+                    Code = model.Code,
+                    Description = model.Description,
+                    Semester = model.Semester != null ? (int)model.Semester : -1,
+                    ImgLoc = model.ImgLoc,
+                    StartDate = model.StartDate.Value,
+                    EndDate = model.EndDate.Value
+                };
+                await _courseRepository.AddCourseAsync(course);
+            }
+            catch (Exception e) {
+                _logger.LogError(e, e.Message);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+        [HttpGet]
+        public async Task<IActionResult> SearchCourses(string search)
+        {
+            try { 
+                var courses = await _courseRepository.SearchListAsync(search);
+
+                OverviewModel overviewModel = new OverviewModel
+                {
+                    Courses = courses.Select(course => new CourseModel
+                    {
+                        Name = course.Name,
+                        Code = course.Code,
+                        Description = course.Description,
+                        Semester = course.Semester != null ? (int)course.Semester : -1,
+                        ImgLoc = course.ImgLoc,
+                        StartDate = course.StartDate,
+                        EndDate = course.EndDate
+                    }).ToList()
+                };
+                return PartialView("PartialCourseOverview", overviewModel);
+            }
+            catch (Exception e) {
+                _logger.LogError(e, e.Message);
+                return PartialView("PartialCourseOverview", null);
+            }
+        }
+
+       [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

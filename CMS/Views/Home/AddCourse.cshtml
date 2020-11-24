@@ -1,0 +1,57 @@
+﻿@model CourseModel
+@{
+    ViewData["Title"] = "Add Course";
+}
+
+<form class="ui form" method="post" asp-controller="Home" asp-action="Addcourse">
+    <div class="field">
+        <label asp-for="Name">
+            Name
+        </label>
+        <input asp-for="Name" type="text" name="Name" value="" />
+        <span asp-validation-for="Name" class="validation error"></span>
+    </div>
+    <div class="field">
+        <label asp-for="Description">
+            Description
+        </label>
+        <input tasp-for="Description" type="text" name="Description" value="" />
+        <span asp-validation-for="Name" class="validation error"></span>
+    </div>
+    <div class="field">
+        <label asp-for="Code">
+            Code
+        </label>
+        <input asp-for="Code" type="text" name="Code" value="" />
+        <span asp-validation-for="Name" class="validation error"></span>
+    </div>
+    <div class="field">
+        <label asp-for="Semester">
+            Semester
+        </label>
+        <input asp-for="Semester" type="number" name="Semester" value="" />
+        <span asp-validation-for="Name" class="validation error"></span>
+    </div>
+    <div class="field">
+        <label asp-for="ImgLoc">
+            ImageLocation
+        </label>
+        <input asp-for="ImgLoc" type="text" name="Name" value="/images/CodeImage.jpg" />
+        <span asp-validation-for="Name" class="validation error"></span>
+    </div>
+    <div class="field">
+        <label asp-for="StartDate">
+            StartDate
+        </label>
+        <input asp-for="StartDate" type="datetime-local" name="StartDate" />
+        <span asp-validation-for="Name" class="validation error"></span>
+    </div>
+    <div class="field">
+        <label asp-for="EndDate">
+            EndDate
+        </label>
+        <input asp-for="EndDate" type="datetime-local" name="EndDate" />
+        <span asp-validation-for="EndDate" class="validation error"></span>
+    </div>
+    <button type="submit">Add Course</button>
+</form>

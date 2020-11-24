@@ -17,8 +17,21 @@ namespace CMS.Data.Repositories
             this.db = context;
         }
 
+        public async  Task<Course> AddCourseAsync(Course course)
+        {
+            var entityEntry = await db.Courses.AddAsync(course);
+            await db.SaveChangesAsync();
+            return entityEntry.Entity;
+        }
+
         public Task<List<Course>> GetListAsync() {    
             return db.Courses.ToListAsync();
+        }
+
+        public Task<List<Course>> SearchListAsync(string search)
+        {
+            search ??= "";
+            return db.Courses.Where(x => x.Name.Contains(search)).ToListAsync();
         }
     }
 }
