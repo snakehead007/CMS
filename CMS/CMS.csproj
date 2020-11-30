@@ -12,6 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Data\images\placeholder.jpg" />
+    <Content Include="Data\images\wiskunde.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

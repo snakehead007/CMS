@@ -3,7 +3,7 @@
     ViewData["Title"] = "Add Course";
 }
 
-<form class="ui form" method="post" asp-controller="Home" asp-action="Addcourse">
+<form class="ui form" asp-controller="Home" asp-action="Addcourse" method="POST">
     <div class="field">
         <label asp-for="Name">
             Name
@@ -15,36 +15,36 @@
         <label asp-for="Description">
             Description
         </label>
-        <input tasp-for="Description" type="text" name="Description" value="" />
-        <span asp-validation-for="Name" class="validation error"></span>
+        <input asp-for="Description" type="text" name="Description" value="" />
+        <span asp-validation-for="Description" class="validation error"></span>
     </div>
     <div class="field">
         <label asp-for="Code">
             Code
         </label>
         <input asp-for="Code" type="text" name="Code" value="" />
-        <span asp-validation-for="Name" class="validation error"></span>
+        <span asp-validation-for="Code" class="validation error"></span>
     </div>
     <div class="field">
         <label asp-for="Semester">
             Semester
         </label>
         <input asp-for="Semester" type="number" name="Semester" value="" />
-        <span asp-validation-for="Name" class="validation error"></span>
+        <span asp-validation-for="Semester" class="validation error"></span>
     </div>
     <div class="field">
         <label asp-for="ImgLoc">
             ImageLocation
         </label>
-        <input asp-for="ImgLoc" type="text" name="Name" value="/images/CodeImage.jpg" />
-        <span asp-validation-for="Name" class="validation error"></span>
+        <input asp-for="ImgLoc" type="text" name="Name" value="/images/placeholder.jpg" placeholder="/images/placeholder.jpg" />
+        <span asp-validation-for="ImgLoc" class="validation error"></span>
     </div>
     <div class="field">
         <label asp-for="StartDate">
             StartDate
         </label>
         <input asp-for="StartDate" type="datetime-local" name="StartDate" />
-        <span asp-validation-for="Name" class="validation error"></span>
+        <span asp-validation-for="StartDate" class="validation error"></span>
     </div>
     <div class="field">
         <label asp-for="EndDate">

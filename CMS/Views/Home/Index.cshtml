@@ -6,7 +6,6 @@
 <div class="ui block header">
     Overview Courses
     <input id="search" type="search" name="text" placeholder="Search" />
-    <button class="ui button" onclick="search()">Search</button>
 </div>
 
 <div id="PartialView">
@@ -19,7 +18,7 @@
             $('#search').on('keyup', function () {
                 $.ajax({
                     url: '@Url.Action("SearchCourses","Home")?search=' + $("#search").val(),
-                    type: 'POST',
+                    type: 'GET',
                     dataType: 'html',
                     error: (jqXHR, textStatus, errorThrown) => console.log(jqXHR, textStatus, errorThrown)
                 }).done(function (data) {

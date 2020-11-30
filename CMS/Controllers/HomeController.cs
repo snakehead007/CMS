@@ -45,7 +45,7 @@ namespace CMS.Controllers
             }
             catch (Exception e) {
                 _logger.LogError(e, e.Message);
-                return View();
+                return BadRequest();
             }
         }
 
@@ -71,7 +71,6 @@ namespace CMS.Controllers
 
                 var course = new Course
                 {
-
                     Name = model.Name,
                     Code = model.Code,
                     Description = model.Description,
@@ -81,11 +80,14 @@ namespace CMS.Controllers
                     EndDate = model.EndDate.Value
                 };
                 await _courseRepository.AddCourseAsync(course);
+
+                return RedirectToAction("Index", "Home");
             }
             catch (Exception e) {
                 _logger.LogError(e, e.Message);
+                return BadRequest();
             }
-            return RedirectToAction("Index", "Home");
+        
         }
         [HttpGet]
         public async Task<IActionResult> SearchCourses(string search)
@@ -110,7 +112,7 @@ namespace CMS.Controllers
             }
             catch (Exception e) {
                 _logger.LogError(e, e.Message);
-                return PartialView("PartialCourseOverview", null);
+                return BadRequest();
             }
         }
 
