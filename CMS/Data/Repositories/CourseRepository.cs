@@ -24,6 +24,11 @@ namespace CMS.Data.Repositories
             return entityEntry.Entity;
         }
 
+        public async Task<Course> GetCourseById(int id)
+        {
+            return await db.FindAsync<Course>(id);
+        }
+
         public Task<List<Course>> GetListAsync() {    
             return db.Courses.ToListAsync();
         }
@@ -32,6 +37,18 @@ namespace CMS.Data.Repositories
         {
             search ??= "";
             return db.Courses.Where(x => x.Name.Contains(search)).ToListAsync();
+        }
+
+        public async Task DeleteCourseById(int id)
+        {
+            try {
+                Course course = db.FindAsync<Course>(id).Result;
+                db.Remove(course);
+
+                db.SaveChanges();
+            }
+            catch (Exception e) 
+            { throw new Exception("Something went wrong: " + e.Message); }
         }
     }
 }

@@ -1,0 +1,33 @@
+﻿@model CourseModel
+
+<div class="ui grid">
+    <div class="sixteen wide column">
+        <div class="ui error message">
+            <div class="header">Delete course</div>
+            <p>Are you sure you want to delete this course:</p>
+        </div>
+    </div>
+    <div class="eight wide column">
+        <div class="ui fluid card">
+            <div class="image"><img src="@Model.ImgLoc"></div>
+            <div class="content">
+                <div class="header">@Model.Name</div>
+                <div class="meta"><a>@Model.Code</a></div>
+                <div class="description">@Model.Description</div>
+            </div>
+            <div class="extra content">
+                <form asp-controller="Home" asp-action="DeleteCourse" method="post">
+                    <input asp-for="Id" type="hidden" name="id" value="@Model.Id" />
+                    <input asp-for="Name" type="hidden" name="name" value="@Model.Name" />
+                    <input asp-for="Code" type="hidden" name="code" value="@Model.Code" />
+                    <input asp-for="Description" type="hidden" name="description" value="@Model.Description" />
+                    <input asp-for="ImgLoc" type="hidden" name="imgLoc" value="@Model.ImgLoc" />
+                    <input asp-for="Semester" type="hidden" name="semester" value="@Model.Semester" />
+                    <input asp-for="StartDate" type="hidden" name="name" value="@Model.StartDate" />
+                    <input asp-for="EndDate" type="hidden" name="name" value="@Model.EndDate" />
+                    <button class="ui left floated green button" type="submit">Delete</button>
+                </form>
+                    <a class="ui right floated red button" asp-controller="" asp-action="" asp-route-id="">Cancel</a>
+            </div>
+        </div>
+</div>

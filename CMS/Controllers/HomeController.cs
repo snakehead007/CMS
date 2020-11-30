@@ -32,6 +32,7 @@ namespace CMS.Controllers
                 {
                     Courses = courses.Select(course => new CourseModel
                     {
+                        Id = course.CourseId,
                         Name = course.Name,
                         Code = course.Code,
                         Description = course.Description,
@@ -75,7 +76,7 @@ namespace CMS.Controllers
                     Code = model.Code,
                     Description = model.Description,
                     Semester = model.Semester != null ? (int)model.Semester : -1,
-                    ImgLoc = model.ImgLoc,
+                    ImgLoc = model.ImgLoc != null ? model.ImgLoc : "/images/placeholder.jpg",
                     StartDate = model.StartDate.Value,
                     EndDate = model.EndDate.Value
                 };
@@ -89,6 +90,7 @@ namespace CMS.Controllers
             }
         
         }
+
         [HttpGet]
         public async Task<IActionResult> SearchCourses(string search)
         {
@@ -116,7 +118,44 @@ namespace CMS.Controllers
             }
         }
 
-       [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [HttpGet]
+        public async Task<IActionResult> EditCourse(int id)
+        {
+            Console.WriteLine(id.ToString());
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult DeleteCourse(int id)
+        {
+            Console.WriteLine(id.ToString());
+
+            Course course = _courseRepository.GetCourseById(id).Result;
+
+            CourseModel courseModel = new CourseModel { 
+                Id = course.CourseId,
+                Name = course.Name,
+                Code = course.Code,
+                Description = course.Description,
+                ImgLoc = course.ImgLoc,
+                Semester = (int)course.Semester,
+                StartDate = course.StartDate,
+                EndDate = course.EndDate
+            };
+
+            return View(courseModel);
+            //Return view confirmation page => are you sure you want to delete course...
+        }
+
+        [HttpPost]
+        public IActionResult DeleteCourse(CourseModel course)
+        {
+            //ToDo : catch exception
+            _courseRepository.DeleteCourseById(course.Id);
+            return RedirectToAction("Index", "Home");
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
