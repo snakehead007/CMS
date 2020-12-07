@@ -79,5 +79,9 @@ namespace CMS.Data.Repositories
             throw new NotImplementedException();
         }
 
+        public bool UpdateCourseById(int id, Course course)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

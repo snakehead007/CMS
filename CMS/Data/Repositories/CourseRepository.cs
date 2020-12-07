@@ -50,29 +50,24 @@ namespace CMS.Data.Repositories
             catch (Exception e) 
             { throw new Exception("Something went wrong: " + e.Message); }
         }
+
+        public bool UpdateCourseById(int id, Course course)
+        {
+            var courseResult = (from c in db.Courses where c.CourseId == id select c).First();
+
+            courseResult.Name = course.Name;
+            courseResult.Code = course.Code;
+            courseResult.Description = course.Description;
+            courseResult.ImgLoc = course.ImgLoc;
+            courseResult.Semester = course.Semester;
+            courseResult.StartDate = course.StartDate;
+            courseResult.EndDate = course.EndDate;
+
+            try { 
+                db.SaveChanges();
+                return true; 
+            }
+            catch (Exception e) { return false; }
+        }
     }
 }
-
-//firstly used this inside function GetListAsync:
-
-//List<Course> courses = new List<Course>();
-
-////alle courses opvragen uit db.
-//var qry = from c in db.Courses
-//          orderby c.Code
-//          select c;
-
-////voor elke course ga je dan een nieuw course model aanmaken en deze in de list steken.
-//foreach (var course in qry) {
-//    var temp = new Course { 
-//        CourseId = course.CourseId, 
-//        Name = course.Name, 
-//        Code = course.Code, 
-//        Description = course.Description, 
-//        ImgLoc = course.ImgLoc, 
-//        Semester = course.Semester, 
-//        StartDate = course.StartDate, 
-//        EndDate = course.EndDate};
-
-//    courses.Add(temp);
-//}

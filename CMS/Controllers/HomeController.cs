@@ -119,9 +119,39 @@ namespace CMS.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditCourse(int id)
+        public IActionResult EditCourse(int id)
         {
-            Console.WriteLine(id.ToString());
+            Course course = _courseRepository.GetCourseById(id).Result;
+
+            CourseModel courseModel = new CourseModel
+            {
+                Id = course.CourseId,
+                Name = course.Name,
+                Code = course.Code,
+                Description = course.Description,
+                ImgLoc = course.ImgLoc,
+                Semester = (int)course.Semester,
+                StartDate = course.StartDate,
+                EndDate = course.EndDate
+            };
+
+            return View(courseModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditCourse(CourseModel model)
+        {
+
+            _courseRepository.UpdateCourseById(model.Id, new Course {
+                Name = model.Name,
+                Code = model.Code,
+                Description = model.Description, 
+                Semester = model.Semester,
+                ImgLoc = model.ImgLoc,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate
+            });
+
             return RedirectToAction("Index");
         }
 
