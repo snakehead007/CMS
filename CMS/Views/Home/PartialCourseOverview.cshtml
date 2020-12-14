@@ -2,7 +2,7 @@
 <div class="ui link cards">
     @foreach (var course in Model.Courses)
     {
-        <div class="card">
+        <div class="card" onclick="goToSubjectOverview(@course.CourseId)">
             <div class="image"><img src="@course.ImgLoc"></div>
             <div class="content">
                 <div class="header">@course.Name</div>

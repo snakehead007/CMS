@@ -24,8 +24,44 @@ namespace CMS.Data.Repositories
             return entityEntry.Entity;
         }
 
+        public async Task<Course> AddSubjectToCourseAsync(int courseId, Subject subject)
+        {
+            var course = await GetSubjectsOfCourseAsync(courseId);
+            course.Subjects ??= new List<Subject>();
+            course.Subjects.Add(subject);
+
+            await db.SaveChangesAsync();
+            return course;
+        }
+
+        public async Task<Course> EditSubjectToCourseAsync(int courseId, Subject subject)
+        {
+            var course = await GetSubjectsOfCourseAsync(courseId);
+
+            foreach(var subjectOfCourse in course.Subjects)
+            {
+                if(subjectOfCourse.SubjectId == subject.SubjectId)
+                {
+                    subjectOfCourse.Name = subject.Name;
+                    subjectOfCourse.Description = subject.Description;
+                }
+            }
+            await db.SaveChangesAsync();
+            return course;
+        }
+
+        public Task<Course> GetCourseAsync(int courseId)
+        {
+            return db.Courses.FindAsync(courseId).AsTask();
+        }
+
         public Task<List<Course>> GetListAsync() {    
             return db.Courses.ToListAsync();
+        }
+
+        public Task<Course> GetSubjectsOfCourseAsync(int courseId)
+        {
+            return db.Courses.Include(x => x.Subjects).SingleAsync(x => x.CourseId == courseId);
         }
 
         public Task<List<Course>> SearchListAsync(string search)

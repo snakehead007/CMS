@@ -1,5 +1,6 @@
 using CMS.Data;
 using CMS.Data.Repositories;
+using CMS.Hubs;
 using CMS.Interfaces.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +26,7 @@ namespace CMS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
+            services.AddSignalR();
             bool useInMemory = Configuration.GetSection("RepositorySettings").GetValue<bool>("UseInMemoryRepository");
 
             if (!useInMemory && IsDatabaseOnline()) 
@@ -64,6 +65,7 @@ namespace CMS
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<CourseHub>("/hubs/courses");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -24,5 +24,7 @@ namespace CMS.Data.Entities
         public DateTime? EndDate { get; set; }
 
         public int? Semester { get; set; }
+
+        public List<Subject> Subjects { get; set; }
     }
 }

@@ -14,20 +14,26 @@ namespace CMS.Data
         {}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            modelBuilder.Entity<Course>().ToTable("Courses");
-            modelBuilder.Entity<Course>().Property(x => x.CourseId).UseIdentityColumn().ValueGeneratedOnAdd();
-            modelBuilder.Entity<Course>().Property(x => x.Name).IsRequired();
-            modelBuilder.Entity<Course>().Property(x => x.Code).IsRequired();
+            ConfigureCourse(modelBuilder.Entity<Course>());
+            ConfigureSubject(modelBuilder.Entity<Subject>());
         }
 
         public virtual DbSet<Course> Courses { get; set; }
-
+        public virtual DbSet<Subject> Subjects { get; set; }
+        
         private void ConfigureCourse(EntityTypeBuilder<Course> course)
         {
             //dbo.Courses
             course.ToTable("Courses").HasKey(x => x.CourseId);
             course.Property(x => x.CourseId).UseIdentityColumn();
             course.HasIndex(x => x.Name);
+            course.HasMany(x => x.Subjects);
+        }
+        private void ConfigureSubject(EntityTypeBuilder<Subject> subject)
+        {
+            //dbo.Subject
+            subject.ToTable("Subjects").HasKey(x => x.SubjectId);
+            subject.Property(x => x.SubjectId).UseIdentityColumn();
         }
     }
 }
