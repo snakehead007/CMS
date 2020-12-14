@@ -1,0 +1,19 @@
+﻿@model SubjectOverviewViewModel
+
+@foreach (var subject in Model.Subjects)
+{
+    <div id="@subject.SubjectId" class="ui segment">
+        <div class="ui header">@subject.Name</div>
+        <div class="description">@subject.Description</div>
+        <button class="ui button" onclick="startEdit(this)">Edit</button>
+    </div>
+
+    <template id="template_@subject.SubjectId">
+        <label>Name</label>
+        <input id="name_@subject.SubjectId" type="text"value="@subject.Name" />  
+        <label>Description</label>
+        <input id="desc_@subject.SubjectId" type="text" value="@subject.Description"/>
+        <button class="ui button" onclick="saveEdit(this)">Save</button>
+        <button class="ui button" onclick="cancelEdit(this)">Cancel</button>
+    </template>
+}

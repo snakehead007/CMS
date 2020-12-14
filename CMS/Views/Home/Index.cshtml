@@ -14,6 +14,9 @@
 
 @section scripts {
     <script>
+        function goToSubjectOverview(courseId) {
+                window.location = `@Url.Action("SubjectOverview","Subject")?courseId=${courseId}`
+            }
         $(document).ready(function () {
             $('#search').on('keyup', function () {
                 $.ajax({
@@ -26,5 +29,25 @@
                 })
             });
         });
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/hubs/courses")
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+        connection.on("@CMS.Hubs.HubExtensions.CourseChangedEvent", () => {
+            console.log('Course updated');
+            console.log(course);
+            search();
+        });
+        async function start() {
+            try {
+                await connection.start();
+                console.log("SignalR Connected.");
+            } catch (err) {
+                console.log(err);
+                setTimeout(start, 5000);
+            }
+        };
+        connection.onclose(start);
+        start();
     </script>
 }

@@ -8,6 +8,9 @@ using CMS.Models;
 using CMS.Interfaces.Repositories;
 using CMS.Data.Entities;
 using System;
+using Microsoft.AspNetCore.SignalR;
+using CMS.Hubs;
+using CMS.Mappers;
 
 namespace CMS.Controllers
 {
@@ -15,10 +18,12 @@ namespace CMS.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ICourseRepository _courseRepository;
+        private readonly IHubContext<CourseHub> _hubContext;
 
-        public HomeController(ILogger<HomeController> logger, ICourseRepository courseRepository)
+        public HomeController(ILogger<HomeController> logger, ICourseRepository courseRepository, IHubContext<CourseHub> hubContext)
         {
             _logger = logger;
+            _hubContext = hubContext;
             this._courseRepository = courseRepository;
         }
 
@@ -30,17 +35,7 @@ namespace CMS.Controllers
 
                 OverviewModel overviewModel = new OverviewModel
                 {
-                    Courses = courses.Select(course => new CourseModel
-                    {
-                        Id = course.CourseId,
-                        Name = course.Name,
-                        Code = course.Code,
-                        Description = course.Description,
-                        Semester = course.Semester != null ? (int)course.Semester : -1,
-                        ImgLoc = course.ImgLoc,
-                        StartDate = course.StartDate,
-                        EndDate = course.EndDate
-                    }).ToList()
+                    Courses = courses.Select(course => course.ToModel()).ToList()
                 };
                 return View(overviewModel);
             }
@@ -69,19 +64,9 @@ namespace CMS.Controllers
                 {
                     return View(model);
                 }
-
-                var course = new Course
-                {
-                    Name = model.Name,
-                    Code = model.Code,
-                    Description = model.Description,
-                    Semester = model.Semester != null ? (int)model.Semester : -1,
-                    ImgLoc = model.ImgLoc != null ? model.ImgLoc : "/images/placeholder.jpg",
-                    StartDate = model.StartDate.Value,
-                    EndDate = model.EndDate.Value
-                };
-                await _courseRepository.AddCourseAsync(course);
-
+                var course = model.ToEntity();
+                var result = await _courseRepository.AddCourseAsync(course);
+                await _hubContext.NotifyCourseChanged(result);
                 return RedirectToAction("Index", "Home");
             }
             catch (Exception e) {
@@ -99,16 +84,7 @@ namespace CMS.Controllers
 
                 OverviewModel overviewModel = new OverviewModel
                 {
-                    Courses = courses.Select(course => new CourseModel
-                    {
-                        Name = course.Name,
-                        Code = course.Code,
-                        Description = course.Description,
-                        Semester = course.Semester != null ? (int)course.Semester : -1,
-                        ImgLoc = course.ImgLoc,
-                        StartDate = course.StartDate,
-                        EndDate = course.EndDate
-                    }).ToList()
+                    Courses = courses.Select(course => course.ToModel()).ToList()
                 };
                 return PartialView("PartialCourseOverview", overviewModel);
             }

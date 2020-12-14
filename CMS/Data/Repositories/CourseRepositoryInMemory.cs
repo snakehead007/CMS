@@ -35,7 +35,7 @@ namespace CMS.Data.Repositories
                 Code = "CMS-1", 
                 Description = "CMS", 
                 Semester = 2, 
-                ImgLoc = "/images/placeholder.jpg", 
+                ImgLoc = "/images/placeholder.jpg",
                 StartDate = null, 
                 EndDate = null 
             });
@@ -73,12 +73,29 @@ namespace CMS.Data.Repositories
         {
             throw new NotImplementedException();
         }
+        public Task<Course> GetCourseAsync(int courseId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Course> GetSubjectsOfCourseAsync(int courseId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Course> AddSubjectToCourseAsync(int courseId, Subject subject)
+        {
+            throw new NotImplementedException();
+        }
 
         public Task DeleteCourseById(int id)
         {
             throw new NotImplementedException();
         }
-
+        public Task<Course> EditSubjectToCourseAsync(int courseId, Subject subject)
+        {
+            throw new NotImplementedException();
+        }
         public bool UpdateCourseById(int id, Course course)
         {
             throw new NotImplementedException();

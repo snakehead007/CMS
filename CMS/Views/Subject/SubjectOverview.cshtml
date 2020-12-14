@@ -1,0 +1,93 @@
+﻿@model SubjectOverviewViewModel
+@{
+    ViewData["Title"] = Model.Course.Name + "overview";
+}
+
+<div class="ui block header">
+    @Model.Course.Name Subject
+</div>
+
+<div id="PartialView">
+    <partial name="PartialSubjectOverview" />
+</div>
+
+<div class="ui form">
+    <div class="field">
+        <label>Name</label>
+        <input id="name" type="text" name="Name" placeholder="Name" />
+    </div>
+    <div class="field">
+        <label>Description</label>
+        <input id="description" type="text" name="Description" placeholder="Description" />
+    </div>
+    <button class="ui button" onclick="addSubject()">Add Subject</button>
+</div>
+
+@section scripts {
+    <script>
+        function addSubject() {
+            $.ajax({
+                url:"@Url.Action("AddSubject","Subject")",
+                type:"POST",
+                dataType:"html",
+                data: {
+                    courseId: @Model.Course.CourseId,
+                    name:$("input#name").val(),
+                    description: $("input#description").val()
+                },
+                error: function () {
+                    console.log("Search failed");
+                }
+            }).done(function (data) {
+                $("#PartialView").html(data);
+            })
+        }
+        var editing = false;
+        function startEdit(element) {
+            console.log(element);
+            if (!editing) {
+                editing = true;
+                const subjectId = element.parentElement.id;
+                $(`#${subjectId}`).html($(`#template_${subjectId}`).html());
+            }
+        }
+        function saveEdit(element) {
+            if (editing) {
+                editing = !editing;
+                const subjectId = element.parentElement.id;
+                $.ajax({
+                    url:"@Url.Action("EditSubject","Subject")",
+                    type:"PUT",
+                    dataType:"html",
+                    data: {
+                        courseId: @Model.Course.CourseId,
+                        subjectId: subjectId,
+                        name: $(`#name_${subjectId}`).val(),
+                        description: $(`#desc_${subjectId}`).val()
+                    },
+                    error: function () {
+                        console.log("saving edit failed");
+                    }
+                }).done(function (data) {
+                    $("#PartialView").html(data);
+                })
+            }
+        }
+        function cancelEdit(element) {
+            if (editing) {
+                editing = !editing;
+                $.ajax({
+                    url: `@Url.Action("GetSubjects","Subject")?@Model.Course.CourseId`,
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function (data) {
+                        $("#PartialView").html(data)
+                    },
+                    error: function () {
+                        console.log('cancel edit subject failed.');
+                    }
+                });
+            }
+        }
+    </script>
+}
