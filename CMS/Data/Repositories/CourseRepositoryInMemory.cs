@@ -59,6 +59,11 @@ namespace CMS.Data.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<Course> GetCourseById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<List<Course>> GetListAsync()
         {
             return Task.Factory.StartNew(() => { return _db.Values.ToList(); }); //ContinueWith(x => _db.Values.ToList());
@@ -83,7 +88,15 @@ namespace CMS.Data.Repositories
             throw new NotImplementedException();
         }
 
+        public Task DeleteCourseById(int id)
+        {
+            throw new NotImplementedException();
+        }
         public Task<Course> EditSubjectToCourseAsync(int courseId, Subject subject)
+        {
+            throw new NotImplementedException();
+        }
+        public bool UpdateCourseById(int id, Course course)
         {
             throw new NotImplementedException();
         }

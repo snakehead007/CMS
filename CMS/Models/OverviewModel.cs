@@ -29,5 +29,10 @@ namespace CMS.Models
         public List<CourseModel> GetCourses() {
             return courses;
         }
+
+        public CourseModel GetFirst()
+        {
+            return courses.FirstOrDefault();
+        }
     }
 }

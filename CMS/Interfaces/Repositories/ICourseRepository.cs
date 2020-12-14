@@ -16,5 +16,8 @@ namespace CMS.Interfaces.Repositories
         public Task<Course> GetSubjectsOfCourseAsync(int courseId);
         public Task<Course> AddSubjectToCourseAsync(int courseId, Subject subject);
         public Task<Course> EditSubjectToCourseAsync(int courseId, Subject subject);
+        public Task<Course> GetCourseById(int id);
+        public Task DeleteCourseById(int id);
+        public bool UpdateCourseById(int id, Course course);
     }
 }
