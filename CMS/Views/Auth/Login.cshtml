@@ -1,0 +1,32 @@
+﻿@model LoginViewModel
+
+<div class="ui middle aligned center aligned grid">
+    <div class="column">
+        <h2 class="ui header">
+            <div class="content">
+                Log-in to your account
+            </div>
+        </h2>
+        <form class="ui large form" method="post" asp-controller="Auth" asp-action="Login">
+            <div class="ui stacked segment">
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input asp-for="Username" type="text" placeholder="Username">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input asp-for="Password" type="password" placeholder="Password">
+                    </div>
+                </div>
+                <button class="ui fluid large teal submit button" type="submit">Login</button>
+            </div>
+        </form>
+
+        <div class="ui message">
+            <a href="@Url.Action("Register", "Auth")">Don't have an account? Sign up here</a>
+        </div>
+    </div>
+</div>

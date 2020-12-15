@@ -24,7 +24,7 @@ namespace CMS.Mappers
         {
             return new Course
             {
-                CourseId = course.CourseId.Value,
+                CourseId = course.CourseId,
                 Name = course.Name,
                 Code = course.Code,
                 Description = course.Description,

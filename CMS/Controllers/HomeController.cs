@@ -101,7 +101,7 @@ namespace CMS.Controllers
 
             CourseModel courseModel = new CourseModel
             {
-                Id = course.CourseId,
+                CourseId = course.CourseId,
                 Name = course.Name,
                 Code = course.Code,
                 Description = course.Description,
@@ -118,7 +118,7 @@ namespace CMS.Controllers
         public async Task<IActionResult> EditCourse(CourseModel model)
         {
 
-            _courseRepository.UpdateCourseById(model.Id, new Course {
+            _courseRepository.UpdateCourseById(model.CourseId, new Course {
                 Name = model.Name,
                 Code = model.Code,
                 Description = model.Description, 
@@ -139,7 +139,7 @@ namespace CMS.Controllers
             Course course = _courseRepository.GetCourseById(id).Result;
 
             CourseModel courseModel = new CourseModel { 
-                Id = course.CourseId,
+                CourseId = course.CourseId,
                 Name = course.Name,
                 Code = course.Code,
                 Description = course.Description,
@@ -157,7 +157,7 @@ namespace CMS.Controllers
         public IActionResult DeleteCourse(CourseModel course)
         {
             //ToDo : catch exception
-            _courseRepository.DeleteCourseById(course.Id);
+            _courseRepository.DeleteCourseById(course.CourseId);
             return RedirectToAction("Index", "Home");
         }
 

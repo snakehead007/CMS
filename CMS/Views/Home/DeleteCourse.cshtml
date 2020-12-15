@@ -17,7 +17,7 @@
             </div>
             <div class="extra content">
                 <form asp-controller="Home" asp-action="DeleteCourse" method="post">
-                    <input asp-for="Id" type="hidden" name="id" value="@Model.Id" />
+                    <input asp-for="CourseId" type="hidden" name="courseId" value="@Model.CourseId" />
                     <input asp-for="Name" type="hidden" name="name" value="@Model.Name" />
                     <input asp-for="Code" type="hidden" name="code" value="@Model.Code" />
                     <input asp-for="Description" type="hidden" name="description" value="@Model.Description" />
