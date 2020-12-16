@@ -1,5 +1,6 @@
 ﻿using CMS.Models;
 using CMS.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -105,6 +106,38 @@ namespace CMS.Controllers
             }
             //if everything goes according to plan
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetAllUsers() {
+
+            //request users and return view
+            var userList = _userService.GetAllUsers();
+            return View(userList);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetUser(string username)
+        {
+            //request specific user and return view
+            if (username == null || username.Trim().Equals("")) {
+                return RedirectToAction("GetAllUsers", "Auth");
+            }
+            var user = await _userService.GetUser(username);
+            
+            return View(user);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult EditUser(UserViewModel user)
+        {
+            //request users and return view
+            _userService.EditUser(user.userName, user.role);
+
+            return RedirectToAction("GetAllUsers", "Auth");
         }
     }
 }

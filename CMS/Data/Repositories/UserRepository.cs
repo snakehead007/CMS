@@ -1,6 +1,9 @@
 ﻿using CMS.Data.Entities;
 using CMS.Interfaces.Repositories;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace CMS.Data.Repositories
 {
@@ -20,7 +23,30 @@ namespace CMS.Data.Repositories
 
         public Task<User> GetUserAsync(string username)
         {
-            return _dataContext.Users.FindAsync(username).AsTask();
+            return GetUser(username);
+        }
+
+        public bool EditUser(string username, UserRole role)
+        {
+            User user = GetUser(username).Result;
+            user.Role = role;
+            try
+            {
+                _dataContext.SaveChanges();
+                return true;
+            }
+            catch (Exception e) {
+                return false;
+            }
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return _dataContext.Users.ToList();
+        }
+
+        public async Task<User> GetUser(string username) {
+            return await _dataContext.Users.FindAsync(username);
         }
     }
 }

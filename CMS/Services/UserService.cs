@@ -1,5 +1,6 @@
 ﻿using CMS.Data.Entities;
 using CMS.Interfaces.Repositories;
+using CMS.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
@@ -107,6 +108,25 @@ namespace CMS.Services
             }
 
             return false;
+        }
+
+        public List<UserViewModel> GetAllUsers() {
+            List<UserViewModel> userList = new List<UserViewModel>();
+
+            foreach (User user in _userRepository.GetAllUsers()) {
+                userList.Add(new UserViewModel { userName = user.Username, role = user.Role });
+            }
+
+            return userList;
+        }
+
+        public async Task<UserViewModel> GetUser(string username) {
+            var result = await _userRepository.GetUserAsync(username);
+            return new UserViewModel { userName = result.Username, role = result.Role};
+        }
+
+        public bool EditUser(string username, UserRole role) {
+            return _userRepository.EditUser(username, role);
         }
 
         private byte[] HashPassword(string password, byte[] salt) {

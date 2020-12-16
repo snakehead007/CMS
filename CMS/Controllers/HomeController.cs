@@ -11,9 +11,11 @@ using System;
 using Microsoft.AspNetCore.SignalR;
 using CMS.Hubs;
 using CMS.Mappers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CMS.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -46,12 +48,14 @@ namespace CMS.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles ="Admin")]
         public IActionResult AddCourse()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async  Task<IActionResult> AddCourse(CourseModel model)
         {
             try { 
