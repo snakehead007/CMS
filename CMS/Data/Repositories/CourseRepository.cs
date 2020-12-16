@@ -77,7 +77,13 @@ namespace CMS.Data.Repositories
         public async Task DeleteCourseById(int id)
         {
             try {
-                Course course = db.FindAsync<Course>(id).Result;
+
+                Course course = db.Courses.Include(x => x.Subjects).SingleAsync(x => x.CourseId == id).Result;
+
+                if (AreThereAnySubjectsInCourse(course.CourseId)) {
+                    if (!DropAllSubjects(course.CourseId)) throw new Exception("Somthing went wrong while deleting subjects.");
+                }
+
                 db.Remove(course);
 
                 db.SaveChanges();
@@ -103,6 +109,34 @@ namespace CMS.Data.Repositories
                 return true; 
             }
             catch (Exception e) { return false; }
+        }
+
+        public bool AreThereAnySubjectsInCourse(int id) {
+            var subjRes = (from c in db.Courses where c.CourseId == id select c).First();
+
+            if (subjRes.Subjects.Count() > 0) {
+                return true;
+            }
+            return false;
+        }
+
+        public bool DropAllSubjects(int id) {
+            try {
+
+                var subjRes = (from c in db.Courses where c.CourseId == id select c).First();
+
+                foreach(var s in subjRes.Subjects)
+                {
+                    db.Remove(s);
+                }
+
+                db.SaveChanges();
+
+                return true;
+            }
+            catch (Exception e) {
+                return false;
+            }
         }
     }
 }
