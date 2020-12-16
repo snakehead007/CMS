@@ -1,0 +1,29 @@
+﻿@model UserViewModel
+
+<div class="ui card" style="min-width:300px">
+    <div class="content">
+        <div class="header">
+            @Model.userName
+        </div>
+        <div class="meta">
+            Would you like to change this person's role?
+            <div class="ui divider"></div>
+            <div class="description">
+                <form class="ui form" asp-controller="Auth" asp-action="EditUser" method="post">
+                    <input type="hidden" asp-for="userName" value="@Model.userName">
+                    @foreach (var role in Model.roles)
+                    {
+                        <div class="field">
+                            <input type="radio" asp-for="role" value="@role" />@role <br />
+                        </div>
+                    }
+
+                    <div class="ui two buttons">
+                        <button class="ui green button" type="submit">Change</button>
+                        <a class="ui red button" asp-controller="Auth" asp-action="GetAllUsers">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

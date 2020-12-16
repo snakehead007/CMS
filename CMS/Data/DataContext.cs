@@ -1,10 +1,6 @@
 ﻿using CMS.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CMS.Data
 {
@@ -16,10 +12,12 @@ namespace CMS.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             ConfigureCourse(modelBuilder.Entity<Course>());
             ConfigureSubject(modelBuilder.Entity<Subject>());
+            ConfigureUser(modelBuilder.Entity<User>());
         }
 
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
+        public virtual DbSet<User> Users { get; set; }
         
         private void ConfigureCourse(EntityTypeBuilder<Course> course)
         {
@@ -35,5 +33,15 @@ namespace CMS.Data
             subject.ToTable("Subjects").HasKey(x => x.SubjectId);
             subject.Property(x => x.SubjectId).UseIdentityColumn();
         }
+
+        private void ConfigureUser(EntityTypeBuilder<User> user)
+        {
+            //dbo.Users
+            user.ToTable("Users").HasKey(x => x.Username);
+            user.Property(x => x.Username).HasMaxLength(20);
+            user.Property(x => x.PasswordHash).HasMaxLength(64);
+            user.Property(x => x.Salt).HasMaxLength(32);
+        }
+
     }
 }

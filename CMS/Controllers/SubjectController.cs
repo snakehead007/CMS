@@ -6,9 +6,11 @@ using CMS.Interfaces.Repositories;
 using CMS.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CMS.Controllers
 {
+    [Authorize]
     public class SubjectController : Controller
     {
         private readonly ILogger<SubjectController> _logger;
@@ -34,6 +36,7 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Lector")]
         public async Task<IActionResult> AddSubject(int courseId, string name, string description)
         {
             var subject = new Subject { Name = name, Description = description };
@@ -52,6 +55,7 @@ namespace CMS.Controllers
 
         // Put editSubject
         [HttpPut]
+        [Authorize(Roles = "Admin, Lector")]
         public async Task<IActionResult> EditSubject(int courseId, int subjectId, string description, string name)
         {
             var subject = new Subject { SubjectId = subjectId, Name = name, Description = description };

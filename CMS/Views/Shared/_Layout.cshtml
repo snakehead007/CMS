@@ -12,26 +12,39 @@
         <!-- empty for now, had to move sidebar out of it.-->
     </header>
 
+    @if (User?.Identity?.IsAuthenticated ?? false) { 
+
     <div class="ui sidebar inverted vertical menu">
 
-        <a class="active item" asp-area="" asp-controller="Home" asp-action="Index">Overview</a>
-        <a class="item" asp-area="" asp-controller="Home" asp-action="AddCourse">Add Course</a>
-        <a class="item">Login/-out placeholder</a>
+        <a class="active item" asp-controller="Home" asp-action="Index">Overview</a>
+
+        @if (User.IsInRole("Admin")) { 
+            <a class="item" asp-controller="Home" asp-action="AddCourse">Add Course</a>
+            <a class="item" asp-controller="Auth" asp-action="GetAllUsers">Users</a>
+        }
+
+        <a class="item" asp-controller="Auth" asp-action="Logout">Logout</a>
+
     </div>
+
+    }
 
     <div class="pusher">
         <div class="ui container">
-            <div class="ui basic icon menu" id="toggleBar">
-                <a id="toggle" class="item">
-                    <i class="sidebar icon"></i>
-                    Menu
-                </a>
-            </div>
-
+            @if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                <div class="ui basic icon menu" id="toggleBar">
+                    <a id="toggle" class="item">
+                        <i class="sidebar icon"></i>
+                        Menu
+                    </a>
+                </div>
+            }
             <main role="main" class="pb-3">
                 @RenderBody()
             </main>
         </div>
+
         
         <footer class="footer">
             <div class="ui container">
@@ -40,7 +53,7 @@
                 </div>
             </div>
         </footer>
-        
+
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/semantic/semantic.js"></script>

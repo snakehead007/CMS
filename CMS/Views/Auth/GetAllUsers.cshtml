@@ -1,0 +1,23 @@
+﻿@model List<UserViewModel>
+
+<div class="ui cards">
+    @foreach (UserViewModel user in Model)
+    {
+
+        <div class="ui card">
+            <div class="content">
+                <div class="center aligned header">@user.userName</div>
+                <div class="center aligned description">
+                    <p>This user is a: @user.role</p>
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="center aligned author">
+                    <a class="ui green button" asp-controller="Auth" asp-action="GetUser" asp-route-username="@user.userName">Edit</a>
+                </div>
+            </div>
+        </div>
+
+
+    }
+</div>

@@ -10,11 +10,13 @@
                 <div class="description">@course.Description</div>
             </div>
             <div class="extra content">
-                <div class="ui two buttons">
-                    
-                    <a class="ui green button" asp-controller="Home" asp-action="EditCourse" asp-route-id="@course.Id">Edit</a>
-                    <a class="ui red button" asp-controller="Home" asp-action="DeleteCourse" asp-route-id="@course.Id">Delete</a>
-                </div>
+                @if (User.IsInRole("Admin")) { 
+                    <div class="ui two buttons">
+
+                        <a class="ui green button" asp-controller="Home" asp-action="EditCourse" asp-route-id="@course.CourseId">Edit</a>
+                        <a class="ui red button" asp-controller="Home" asp-action="DeleteCourse" asp-route-id="@course.CourseId">Delete</a>
+                    </div>
+                }
                 <span class="right floated">Semester @course.Semester</span>
             </div>
         </div>
