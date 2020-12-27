@@ -11,9 +11,11 @@ using System;
 using Microsoft.AspNetCore.SignalR;
 using CMS.Hubs;
 using CMS.Mappers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CMS.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -46,12 +48,14 @@ namespace CMS.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles ="Admin")]
         public IActionResult AddCourse()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async  Task<IActionResult> AddCourse(CourseModel model)
         {
             try { 
@@ -101,7 +105,7 @@ namespace CMS.Controllers
 
             CourseModel courseModel = new CourseModel
             {
-                Id = course.CourseId,
+                CourseId = course.CourseId,
                 Name = course.Name,
                 Code = course.Code,
                 Description = course.Description,
@@ -118,7 +122,7 @@ namespace CMS.Controllers
         public async Task<IActionResult> EditCourse(CourseModel model)
         {
 
-            _courseRepository.UpdateCourseById(model.Id, new Course {
+            _courseRepository.UpdateCourseById(model.CourseId, new Course {
                 Name = model.Name,
                 Code = model.Code,
                 Description = model.Description, 
@@ -139,7 +143,7 @@ namespace CMS.Controllers
             Course course = _courseRepository.GetCourseById(id).Result;
 
             CourseModel courseModel = new CourseModel { 
-                Id = course.CourseId,
+                CourseId = course.CourseId,
                 Name = course.Name,
                 Code = course.Code,
                 Description = course.Description,
@@ -157,7 +161,7 @@ namespace CMS.Controllers
         public IActionResult DeleteCourse(CourseModel course)
         {
             //ToDo : catch exception
-            _courseRepository.DeleteCourseById(course.Id);
+            _courseRepository.DeleteCourseById(course.CourseId);
             return RedirectToAction("Index", "Home");
         }
 

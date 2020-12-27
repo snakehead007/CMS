@@ -2,6 +2,8 @@ using CMS.Data;
 using CMS.Data.Repositories;
 using CMS.Hubs;
 using CMS.Interfaces.Repositories;
+using CMS.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
@@ -35,6 +37,14 @@ namespace CMS
                     o.UseSqlServer(Configuration.GetSection("RepositorySettings").GetValue<string>("SqlConnection"))
                 );
                 services.AddScoped<ICourseRepository, CourseRepository>();
+                services.AddScoped<IUserRepository, UserRepository>();
+
+                services.AddHttpContextAccessor();
+                services.AddScoped<UserService>();
+                services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>{
+                            options.LoginPath = "/Auth/Login";
+                    });
             }
             else
             {
@@ -61,6 +71,7 @@ namespace CMS
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
