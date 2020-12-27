@@ -1,6 +1,7 @@
 ﻿using CMS.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace CMS.Data
 {
@@ -13,11 +14,17 @@ namespace CMS.Data
             ConfigureCourse(modelBuilder.Entity<Course>());
             ConfigureSubject(modelBuilder.Entity<Subject>());
             ConfigureUser(modelBuilder.Entity<User>());
+            ConfigureAttachment(modelBuilder.Entity<Attachment>());
+            ConfigureAttachmentVersion(modelBuilder.Entity<AttachmentVersion>());
+
         }
 
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public DbSet<Attachment> attachments { get; set; }
+        public DbSet<AttachmentVersion> AttachmentVersions { get; set; }
+
         
         private void ConfigureCourse(EntityTypeBuilder<Course> course)
         {
@@ -32,6 +39,7 @@ namespace CMS.Data
             //dbo.Subject
             subject.ToTable("Subjects").HasKey(x => x.SubjectId);
             subject.Property(x => x.SubjectId).UseIdentityColumn();
+            subject.HasMany(x => x.Attachments);
         }
 
         private void ConfigureUser(EntityTypeBuilder<User> user)
@@ -42,6 +50,20 @@ namespace CMS.Data
             user.Property(x => x.PasswordHash).HasMaxLength(64);
             user.Property(x => x.Salt).HasMaxLength(32);
         }
+        private void ConfigureAttachmentVersion(EntityTypeBuilder<AttachmentVersion> attachmentVersion)
+        {
+            // dbo.AttachmentVersion
+            attachmentVersion.ToTable("attachmentVersions").HasKey(x => x.AttachmentVersionId);
+            attachmentVersion.Property(x => x.AttachmentVersionId).UseIdentityColumn();
+        }
 
+        private void ConfigureAttachment(EntityTypeBuilder<Attachment> attachment)
+        {
+            // dbo.Attachments
+            attachment.ToTable("Attachments").HasKey(x => x.AttachmentId);
+            attachment.Property(x => x.AttachmentId).UseIdentityColumn();
+            attachment.HasOne(x => x.CurrentVersion);
+            attachment.HasMany(x => x.Versions);
+        }
     }
 }
