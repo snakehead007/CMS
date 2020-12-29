@@ -16,14 +16,13 @@ namespace CMS.Data
             ConfigureUser(modelBuilder.Entity<User>());
             ConfigureAttachment(modelBuilder.Entity<Attachment>());
             ConfigureAttachmentVersion(modelBuilder.Entity<AttachmentVersion>());
-
         }
 
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public DbSet<Attachment> attachments { get; set; }
-        public DbSet<AttachmentVersion> AttachmentVersions { get; set; }
+        public virtual DbSet<Attachment> Attachments { get; set; }
+        public virtual DbSet<AttachmentVersion> AttachmentVersions { get; set; }
 
         
         private void ConfigureCourse(EntityTypeBuilder<Course> course)
@@ -50,13 +49,6 @@ namespace CMS.Data
             user.Property(x => x.PasswordHash).HasMaxLength(64);
             user.Property(x => x.Salt).HasMaxLength(32);
         }
-        private void ConfigureAttachmentVersion(EntityTypeBuilder<AttachmentVersion> attachmentVersion)
-        {
-            // dbo.AttachmentVersion
-            attachmentVersion.ToTable("attachmentVersions").HasKey(x => x.AttachmentVersionId);
-            attachmentVersion.Property(x => x.AttachmentVersionId).UseIdentityColumn();
-        }
-
         private void ConfigureAttachment(EntityTypeBuilder<Attachment> attachment)
         {
             // dbo.Attachments
@@ -64,6 +56,13 @@ namespace CMS.Data
             attachment.Property(x => x.AttachmentId).UseIdentityColumn();
             attachment.HasOne(x => x.CurrentVersion);
             attachment.HasMany(x => x.Versions);
+        }
+
+        private void ConfigureAttachmentVersion(EntityTypeBuilder<AttachmentVersion> attachmentVersion)
+        {
+            // dbo.AttachmentVersion
+            attachmentVersion.ToTable("AttachmentVersions").HasKey(x => x.AttachmentVersionId);
+            attachmentVersion.Property(x => x.AttachmentVersionId).UseIdentityColumn();
         }
     }
 }
