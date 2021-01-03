@@ -65,7 +65,7 @@ namespace CMS.Data.Repositories
 
         public Task<Course> GetSubjectsOfCourseAsync(int courseId)
         {
-            return db.Courses.Include(x => x.Subjects).SingleAsync(x => x.CourseId == courseId);
+            return db.Courses.Include(x => x.Subjects).ThenInclude(x => x.Attachments).SingleAsync(x => x.CourseId == courseId);
         }
 
         public Task<List<Course>> SearchListAsync(string search)
