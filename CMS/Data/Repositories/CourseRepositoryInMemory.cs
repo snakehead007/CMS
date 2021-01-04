@@ -100,5 +100,10 @@ namespace CMS.Data.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Task AddAttachmentToSubjectAsync(int subjectId, Attachment attachment)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

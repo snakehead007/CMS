@@ -19,5 +19,6 @@ namespace CMS.Interfaces.Repositories
         public Task<Course> GetCourseById(int id);
         public Task DeleteCourseById(int id);
         public bool UpdateCourseById(int id, Course course);
+        public Task AddAttachmentToSubjectAsync(int subjectId, Attachment attachment);
     }
 }

@@ -19,6 +19,57 @@ namespace CMS.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
+            modelBuilder.Entity("CMS.Data.Entities.Attachment", b =>
+                {
+                    b.Property<int>("AttachmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("CurrentVersionAttachmentVersionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SubjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AttachmentId");
+
+                    b.HasIndex("CurrentVersionAttachmentVersionId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("Attachments");
+                });
+
+            modelBuilder.Entity("CMS.Data.Entities.AttachmentVersion", b =>
+                {
+                    b.Property<int>("AttachmentVersionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("AttachmentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("int");
+
+                    b.HasKey("AttachmentVersionId");
+
+                    b.HasIndex("AttachmentId");
+
+                    b.ToTable("AttachmentVersions");
+                });
+
             modelBuilder.Entity("CMS.Data.Entities.Course", b =>
                 {
                     b.Property<int>("CourseId")
@@ -99,6 +150,26 @@ namespace CMS.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("CMS.Data.Entities.Attachment", b =>
+                {
+                    b.HasOne("CMS.Data.Entities.AttachmentVersion", "CurrentVersion")
+                        .WithMany()
+                        .HasForeignKey("CurrentVersionAttachmentVersionId");
+
+                    b.HasOne("CMS.Data.Entities.Subject", null)
+                        .WithMany("Attachments")
+                        .HasForeignKey("SubjectId");
+
+                    b.Navigation("CurrentVersion");
+                });
+
+            modelBuilder.Entity("CMS.Data.Entities.AttachmentVersion", b =>
+                {
+                    b.HasOne("CMS.Data.Entities.Attachment", null)
+                        .WithMany("Versions")
+                        .HasForeignKey("AttachmentId");
+                });
+
             modelBuilder.Entity("CMS.Data.Entities.Subject", b =>
                 {
                     b.HasOne("CMS.Data.Entities.Course", null)
@@ -106,9 +177,19 @@ namespace CMS.Migrations
                         .HasForeignKey("CourseId");
                 });
 
+            modelBuilder.Entity("CMS.Data.Entities.Attachment", b =>
+                {
+                    b.Navigation("Versions");
+                });
+
             modelBuilder.Entity("CMS.Data.Entities.Course", b =>
                 {
                     b.Navigation("Subjects");
+                });
+
+            modelBuilder.Entity("CMS.Data.Entities.Subject", b =>
+                {
+                    b.Navigation("Attachments");
                 });
 #pragma warning restore 612, 618
         }

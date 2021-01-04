@@ -1,5 +1,7 @@
 ﻿using CMS.Data.Entities;
 using CMS.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CMS.Mappers
 {
@@ -11,7 +13,9 @@ namespace CMS.Mappers
             {
                 SubjectId = subject.SubjectId,
                 Name = subject.Name,
-                Description = subject.Description
+                Description = subject.Description,
+                Attachments = subject.Attachments?.Select(subject => subject.ToModel())?.ToList() ??
+                    new List<AttachmentViewModel>()
             };
         }
     }

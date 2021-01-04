@@ -38,7 +38,8 @@ namespace CMS
                 );
                 services.AddScoped<ICourseRepository, CourseRepository>();
                 services.AddScoped<IUserRepository, UserRepository>();
-
+                services.AddScoped<IAttachmentRepository, AttachmentRepository>();
+                services.AddScoped<FileService>();
                 services.AddHttpContextAccessor();
                 services.AddScoped<UserService>();
                 services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

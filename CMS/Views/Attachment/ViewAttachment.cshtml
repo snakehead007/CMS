@@ -1,0 +1,36 @@
+﻿@model AttachmentViewModel
+@{
+    ViewData["Title"] = "Attachment" + Model.Name;
+}
+
+<div class="ui block header">
+    Attachment @Model.Name
+</div>
+
+<a href="@Url.Action("GetFileContent","Attachment")?attachmentId=@Model.AttachmentId" class="ui button">Download</a>
+@if (User.IsInRole("Admin") || User.IsInRole("Lector"))
+{
+    <h2 class="ui dividing header">Versions</h2>
+    @foreach (var version in Model.Versions.OrderBy(x => x.CreatedOn))
+    {
+        <div class="ui fluid segment">
+            Version @version.VersionId - Created on @version.CreatedOn - Size : @version.Size
+        </div>
+        if (version.VersionId != Model.CurrentVersion.VersionId)
+        {
+            <form method="post" asp-controller="Attachment" asp-action="ChangeVersion">
+                <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
+                <input type="hidden" name="versionId" value="@version.VersionId" />
+                <button class="ui button" type="submit">Change Version</button>
+            </form>
+        }
+
+    }
+    <h2 class="ui dividing header">Upload new version</h2>
+    <form asp-controller="Attachment" asp-action="uploadVersion" enctype="multipart/form-data" method="post" class="ui action input">
+        <input type="hidden" name="attachmentId" value="@Model.AttachmentId" />
+        <input type="file" name="file" value="" />
+        <button class="ui button" type="submit">upload</button>
+    </form>
+
+}
