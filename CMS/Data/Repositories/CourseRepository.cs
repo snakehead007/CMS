@@ -138,5 +138,13 @@ namespace CMS.Data.Repositories
                 return false;
             }
         }
+
+        public async Task AddAttachmentToSubjectAsync(int subjectId, Attachment attachment)
+        {
+            var subject = await db.Subjects.Include(x => x.Attachments).SingleAsync(x => x.SubjectId == subjectId);
+            subject.Attachments ??= new List<Attachment>();
+            subject.Attachments.Add(attachment);
+            await db.SaveChangesAsync();
+        }
     }
 }
