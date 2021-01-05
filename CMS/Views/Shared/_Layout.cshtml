@@ -12,20 +12,22 @@
         <!-- empty for now, had to move sidebar out of it.-->
     </header>
 
-    @if (User?.Identity?.IsAuthenticated ?? false) { 
+    @if (User?.Identity?.IsAuthenticated ?? false)
+    {
 
-    <div class="ui sidebar inverted vertical menu">
+        <div class="ui sidebar inverted vertical menu">
 
-        <a class="active item" asp-controller="Home" asp-action="Index">Overview</a>
+            <a id="Overview" class="item" asp-controller="Home" asp-action="Index">Overview</a>
 
-        @if (User.IsInRole("Admin")) { 
-            <a class="item" asp-controller="Home" asp-action="AddCourse">Add Course</a>
-            <a class="item" asp-controller="Auth" asp-action="GetAllUsers">Users</a>
-        }
+            @if (User.IsInRole("Admin"))
+            {
+                <a id="AddCourse" class="item" asp-controller="Home" asp-action="AddCourse">Add Course</a>
+                <a id="Users" class="item" asp-controller="Auth" asp-action="GetAllUsers">Users</a>
+            }
 
-        <a class="item" asp-controller="Auth" asp-action="Logout">Logout</a>
+            <a class="item" asp-controller="Auth" asp-action="Logout">Logout</a>
 
-    </div>
+        </div>
 
     }
 
@@ -45,7 +47,7 @@
             </main>
         </div>
 
-        
+
         <footer class="footer">
             <div class="ui container">
                 <div class="">
@@ -62,6 +64,7 @@
     <script>
         $('#toggle').click(function () {
             $('.ui.sidebar').sidebar('toggle');
+            $('#' + '@ViewBag.Title').addClass('active');
         });
     </script>
     @RenderSection("Scripts", required: false)
