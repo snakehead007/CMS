@@ -52,5 +52,19 @@ namespace CMS.Mappers
                 Subjects = course.Subjects?.Select(x => x.ToArchive()).ToList() ?? new List<SubjectArchive>()
             };
         }
+
+        public static CourseModel ArchiveToCourseModel(this CourseArchive course) {
+            return new CourseModel
+            {
+                CourseId = course.CourseId,
+                Name = course.Name,
+                Code = course.Code,
+                Description = course.Description,
+                Semester = course.Semester != null ? (int)course.Semester : -1,
+                ImgLoc = course.ImgLoc,
+                StartDate = course.StartDate,
+                EndDate = course.EndDate
+            };
+        }
     }
 }

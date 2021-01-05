@@ -1,5 +1,9 @@
 ﻿using CMS.Mappers;
+using CMS.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CMS.Data.Repositories
@@ -30,6 +34,76 @@ namespace CMS.Data.Repositories
 
             //opslaan
             await _dataContext.SaveChangesAsync();
+        }
+
+        public List<CourseModel> GetAllArchivedCourses() {
+            var result = new List<CourseModel>();
+            try
+            {
+                var list = _dataContext.CourseArchive.ToListAsync().Result;
+                foreach (var course in list) {
+                    result.Add(course.ArchiveToCourseModel());
+                }
+                return result;
+            }
+            catch (Exception e) {
+                return result;
+            }
+        }
+
+        public List<CourseModel> GetByName(string search) {
+            var result = new List<CourseModel>();
+            try
+            {
+                var list = _dataContext.CourseArchive.Where(x => x.Name.StartsWith(search) || search == null).ToListAsync().Result;
+                foreach (var course in list)
+                {
+                    result.Add(course.ArchiveToCourseModel());
+                }
+                return result;
+            }
+            catch (Exception e)
+            {
+                return result;
+            }
+        }
+
+        public List<CourseModel> GetByCode(string search)
+        {
+            var result = new List<CourseModel>();
+            try
+            {
+                var list = _dataContext.CourseArchive.Where(x => x.Code.StartsWith(search) || search == null).ToListAsync().Result;
+                foreach (var course in list)
+                {
+                    result.Add(course.ArchiveToCourseModel());
+                }
+                return result;
+            }
+            catch (Exception e)
+            {
+                return result;
+            }
+
+        }
+
+        public List<CourseModel> GetBySemester(int search)
+        {
+            var result = new List<CourseModel>();
+            try
+            {
+                var list = _dataContext.CourseArchive.Where(x => x.Semester == search || search == 0).ToListAsync().Result;
+                foreach (var course in list)
+                {
+                    result.Add(course.ArchiveToCourseModel());
+                }
+                return result;
+            }
+            catch (Exception e)
+            {
+                return result;
+            }
+
         }
     }
 }
