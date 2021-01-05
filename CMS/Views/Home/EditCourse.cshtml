@@ -4,7 +4,7 @@
 }
 
 <form class="ui form" asp-controller="Home" asp-action="EditCourse" method="POST">
-    <input asp-for="CourseId" type="hidden" name="id" value="@Model.CourseId" />
+    <input name="CourseId" asp-for="CourseId" type="hidden" value="@Model.CourseId" />
     <div class="field">
         <label asp-for="Name">
             Name
@@ -16,7 +16,8 @@
         <label asp-for="Description">
             Description
         </label>
-        <input asp-for="Description" type="text" name="Description" value="@Model.Description" />
+
+        <textarea asp-for="Description" type="text" name="Description" value="@Model.Description"></textarea>
         <span asp-validation-for="Description" class="validation error"></span>
     </div>
     <div class="field">
@@ -59,3 +60,14 @@
         <a class="medium ui red button" asp-controller="Home" asp-action="Index">Cancel</a>
     </div>
 </form>
+@section scripts{
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script>
+    <script>
+        new FroalaEditor('textarea', {
+            toolbarButtons: [
+                ['bold', 'italic', 'underline', 'paragraphFormat', 'formatOL', 'formatUL'],
+                ['insertHTML', 'undo', 'redo', 'html']
+            ]
+        });
+    </script>
+}

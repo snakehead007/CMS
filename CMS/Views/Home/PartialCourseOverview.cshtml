@@ -7,18 +7,25 @@
             <div class="content">
                 <div class="header">@course.Name</div>
                 <div class="meta"><a>@course.Code</a></div>
-                <div class="description">@course.Description</div>
-            </div>
-            <div class="extra content">
-                @if (User.IsInRole("Admin")) { 
-                    <div class="ui two buttons">
+                <div id="Description_@course.CourseId"
+                     class="description">@course.Description</div>
+                </div>
+                <div class="extra content">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="ui two buttons">
 
-                        <a class="ui green button" asp-controller="Home" asp-action="EditCourse" asp-route-id="@course.CourseId">Edit</a>
-                        <a class="ui red button" asp-controller="Home" asp-action="DeleteCourse" asp-route-id="@course.CourseId">Delete</a>
-                    </div>
-                }
-                <span class="right floated">Semester @course.Semester</span>
+                            <a class="ui green button" asp-controller="Home" asp-action="EditCourse" asp-route-id="@course.CourseId">Edit</a>
+                            <a class="ui red button" asp-controller="Home" asp-action="DeleteCourse" asp-route-id="@course.CourseId">Delete</a>
+                        </div>
+                    }
+                    <span class="right floated">Semester @course.Semester</span>
+                </div>
             </div>
-        </div>
-    }
+            <script>
+            $(document).ready(() => {
+                $("#Description_@course.CourseId").html(decodeHTML("@course.Description"));
+            });
+            </script>
+        }
 </div>

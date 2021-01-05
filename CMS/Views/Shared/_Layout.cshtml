@@ -6,26 +6,30 @@
     <title>@ViewData["Title"] - CMS</title>
     <link rel="stylesheet" href="~/lib/semantic/semantic.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script> <!--Jquery eerst initaliseren, omdat inline scripten jquery gebruiken-->
     <header>
         <!-- empty for now, had to move sidebar out of it.-->
     </header>
 
-    @if (User?.Identity?.IsAuthenticated ?? false) { 
+    @if (User?.Identity?.IsAuthenticated ?? false)
+    {
 
-    <div class="ui sidebar inverted vertical menu">
+        <div class="ui sidebar inverted vertical menu">
 
-        <a class="active item" asp-controller="Home" asp-action="Index">Overview</a>
+            <a class="active item" asp-controller="Home" asp-action="Index">Overview</a>
 
-        @if (User.IsInRole("Admin")) { 
-            <a class="item" asp-controller="Home" asp-action="AddCourse">Add Course</a>
-            <a class="item" asp-controller="Auth" asp-action="GetAllUsers">Users</a>
-        }
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="item" asp-controller="Home" asp-action="AddCourse">Add Course</a>
+                <a class="item" asp-controller="Auth" asp-action="GetAllUsers">Users</a>
+            }
 
-        <a class="item" asp-controller="Auth" asp-action="Logout">Logout</a>
+            <a class="item" asp-controller="Auth" asp-action="Logout">Logout</a>
 
-    </div>
+        </div>
 
     }
 
@@ -45,7 +49,7 @@
             </main>
         </div>
 
-        
+
         <footer class="footer">
             <div class="ui container">
                 <div class="">
@@ -55,7 +59,6 @@
         </footer>
 
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/semantic/semantic.js"></script>
     <script src="~/lib/microsoft-signalr/signalr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -63,6 +66,11 @@
         $('#toggle').click(function () {
             $('.ui.sidebar').sidebar('toggle');
         });
+        var decodeHTML = function (html) {
+            var txt = document.createElement('textarea');
+            txt.innerHTML = html;
+            return txt.value;
+        };
     </script>
     @RenderSection("Scripts", required: false)
 </body>
