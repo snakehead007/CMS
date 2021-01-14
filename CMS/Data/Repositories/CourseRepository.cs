@@ -71,7 +71,7 @@ namespace CMS.Data.Repositories
         public Task<List<Course>> SearchListAsync(string search)
         {
             search ??= "";
-            return db.Courses.Where(x => x.Name.Contains(search)).ToListAsync();
+            return db.Courses.Where(x => x.Name.Contains(search) || x.Description.Contains(search) || x.Code.Contains(search)).ToListAsync();
         }
 
         public async Task DeleteCourseById(int id)

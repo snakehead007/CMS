@@ -90,7 +90,15 @@ namespace CMS.Controllers
                 {
                     Courses = courses.Select(course => course.ToModel()).ToList()
                 };
-                return PartialView("PartialCourseOverview", overviewModel);
+                if (overviewModel.Courses.Count!=0)
+                {
+                    return PartialView("PartialCourseOverview", overviewModel);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+                
             }
             catch (Exception e) {
                 _logger.LogError(e, e.Message);

@@ -12,6 +12,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script> <!--Jquery eerst initaliseren, omdat inline scripten jquery gebruiken-->
     <header>
         <!-- empty for now, had to move sidebar out of it.-->
+        <div id="messages"></div>
     </header>
 
     @if (User?.Identity?.IsAuthenticated ?? false)
@@ -59,6 +60,28 @@
         </footer>
 
     </div>
+    <script>
+        /**
+         * method message
+         * description Toont een message in the header
+         * param {string} message message text
+         * param { string } header header text
+         * param { string } color color of header
+         * param {Number} timout_in_ms amount of time to wait before removing. put 0 to stay forever
+         **/
+        const message = (message, header, color = "grey",timout_in_ms=3000) => {
+            const id = Date.now();
+            $("#messages").append(`<div id="${id}"class="ui ${color} message"><div class="header">${header}</div><p>${message}</p></div>`)
+            if (timout_in_ms != 0) {
+                setTimeout(function () {
+                    $(`#${id}`).fadeOut("slow", function () {
+                        $(`#${id}`).remove()
+                    });
+                }, timout_in_ms);
+            }
+            return id;
+        };
+    </script>
     <script src="~/lib/semantic/semantic.js"></script>
     <script src="~/lib/microsoft-signalr/signalr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
