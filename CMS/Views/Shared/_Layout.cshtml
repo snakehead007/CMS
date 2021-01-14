@@ -6,10 +6,13 @@
     <title>@ViewData["Title"] - CMS</title>
     <link rel="stylesheet" href="~/lib/semantic/semantic.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script> <!--Jquery eerst initaliseren, omdat inline scripten jquery gebruiken-->
     <header>
         <!-- empty for now, had to move sidebar out of it.-->
+        <div id="messages"></div>
     </header>
 
     @if (User?.Identity?.IsAuthenticated ?? false)
@@ -58,7 +61,28 @@
         </footer>
 
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        /**
+         * method message
+         * description Toont een message in the header
+         * param {string} message message text
+         * param { string } header header text
+         * param { string } color color of header
+         * param {Number} timout_in_ms amount of time to wait before removing. put 0 to stay forever
+         **/
+        const message = (message, header, color = "grey",timout_in_ms=3000) => {
+            const id = Date.now();
+            $("#messages").append(`<div id="${id}"class="ui ${color} message"><div class="header">${header}</div><p>${message}</p></div>`)
+            if (timout_in_ms != 0) {
+                setTimeout(function () {
+                    $(`#${id}`).fadeOut("slow", function () {
+                        $(`#${id}`).remove()
+                    });
+                }, timout_in_ms);
+            }
+            return id;
+        };
+    </script>
     <script src="~/lib/semantic/semantic.js"></script>
     <script src="~/lib/microsoft-signalr/signalr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -67,6 +91,11 @@
             $('.ui.sidebar').sidebar('toggle');
             $('#' + '@ViewBag.Title').addClass('active');
         });
+        var decodeHTML = function (html) {
+            var txt = document.createElement('textarea');
+            txt.innerHTML = html;
+            return txt.value;
+        };
     </script>
     @RenderSection("Scripts", required: false)
 </body>

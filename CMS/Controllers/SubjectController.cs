@@ -39,6 +39,12 @@ namespace CMS.Controllers
         [Authorize(Roles = "Admin, Lector")]
         public async Task<IActionResult> AddSubject(int courseId, string name, string description)
         {
+            bool isNameEmpty = string.IsNullOrEmpty(name);
+            if (isNameEmpty)
+            {
+                return BadRequest("Please fill in the name of the subject");
+            }
+
             var subject = new Subject { Name = name, Description = description };
 
             // Subject presisteren

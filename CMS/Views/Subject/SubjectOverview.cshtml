@@ -3,7 +3,6 @@
     ViewBag.Title = "Overview";
     ViewData["Title"] = Model.Course.Name + "overview";
 }
-
 <div class="ui block header">
     @Model.Course.Name Subject
 </div>
@@ -28,22 +27,28 @@
 
 @section scripts {
     <script>
+       
         function addSubject() {
             $.ajax({
-                url:"@Url.Action("AddSubject","Subject")",
-                type:"POST",
-                dataType:"html",
+                url: "@Url.Action("AddSubject","Subject")",
+                type: "POST",
+                dataType: "html",
                 data: {
                     courseId: @Model.Course.CourseId,
-                    name:$("input#name").val(),
+                    name: $("input#name").val(),
                     description: $("input#description").val()
                 },
-                error: function () {
-                    console.log("Search failed");
+                error: function (xhr) {
+                    message(xhr.responseText, "Error on subject creation", "red");
+                },
+                success: function (data) {
+                    $("#PartialView").html(data);
+                    message("Succesfully added new subject.", "Added subject", "green");
+                },
+                fail: () => {
+                    message("Our server doesn't seem to respond", "Server error", "orange");
                 }
-            }).done(function (data) {
-                $("#PartialView").html(data);
-            })
+            });
         }
         var editing = false;
         function startEdit(element) {
@@ -59,21 +64,27 @@
                 editing = !editing;
                 const subjectId = element.parentElement.id;
                 $.ajax({
-                    url:"@Url.Action("EditSubject","Subject")",
-                    type:"PUT",
-                    dataType:"html",
+                    url: "@Url.Action("EditSubject","Subject")",
+                    type: "PUT",
+                    dataType: "html",
                     data: {
                         courseId: @Model.Course.CourseId,
                         subjectId: subjectId,
                         name: $(`#name_${subjectId}`).val(),
                         description: $(`#desc_${subjectId}`).val()
                     },
-                    error: function () {
-                        console.log("saving edit failed");
+                    error: function (xhr) {
+                        message(xhr.responseText, "Error on saving edit", "red");
+                    },
+                    success: function (data) {
+                        $("#PartialView").html(data);
+                        message("Edit saved succesfully", "Edit subject", "green");
+                        console.log("save");
+                    },
+                    fail: () => {
+                        message("Our server doesn't seem to respond", "Server error", "orange");
                     }
-                }).done(function (data) {
-                    $("#PartialView").html(data);
-                })
+                });
             }
         }
         function cancelEdit(element) {
@@ -88,6 +99,10 @@
                     },
                     error: function () {
                         console.log('cancel edit subject failed.');
+                        message("Could not cancel edit of subject, please reload", "Canceling subject edit", "red");
+                    },
+                    fail: () => {
+                        message("Our server doesn't seem to respond", "Server error", "orange");
                     }
                 });
             }

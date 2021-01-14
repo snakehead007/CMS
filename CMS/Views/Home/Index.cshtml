@@ -6,7 +6,13 @@
 
 <div class="ui block header">
     Overview Courses
-    <input id="search" type="search" name="text" placeholder="Search" />
+    <div class="ui search">
+        <div class="ui icon input">
+            <input id="search" class="prompt" type="search" placeholder="Search courses...">
+            <i class="search icon"></i>
+        </div>
+        <div class="results"></div>
+    </div>
 </div>
 
 <div id="PartialView">
@@ -24,9 +30,15 @@
                     url: '@Url.Action("SearchCourses","Home")?search=' + $("#search").val(),
                     type: 'GET',
                     dataType: 'html',
-                    error: (jqXHR, textStatus, errorThrown) => console.log(jqXHR, textStatus, errorThrown)
-                }).done(function (data) {
-                    $('#PartialView').html(data);
+                    error: (xhr) => {
+                        $("#PartialView").html(`<div class="ui warning message"><p>No course with '${$("#search").val()}' was found.</p></div>`)
+                    },
+                    success: function (data) {
+                        $('#PartialView').html(data);
+                    },
+                    fail: () => {
+                        message("Our server doesn't seem to respond", "Server error", "orange");
+                    }
                 })
             });
         });
