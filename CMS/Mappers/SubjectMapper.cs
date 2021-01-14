@@ -18,5 +18,15 @@ namespace CMS.Mappers
                     new List<AttachmentViewModel>()
             };
         }
+
+        public static SubjectArchive ToArchive(this Subject subject)
+        {
+            return new SubjectArchive
+            {
+                SubjectId = subject.SubjectId,
+                Name = subject.Name,
+                Description = subject.Description
+            };
+        }
     }
 }

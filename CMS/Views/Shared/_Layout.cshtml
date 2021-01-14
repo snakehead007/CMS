@@ -20,12 +20,13 @@
 
         <div class="ui sidebar inverted vertical menu">
 
-            <a class="active item" asp-controller="Home" asp-action="Index">Overview</a>
+            <a id="Overview" class="item" asp-controller="Home" asp-action="Index">Overview</a>
 
             @if (User.IsInRole("Admin"))
             {
-                <a class="item" asp-controller="Home" asp-action="AddCourse">Add Course</a>
-                <a class="item" asp-controller="Auth" asp-action="GetAllUsers">Users</a>
+                <a id="AddCourse" class="item" asp-controller="Home" asp-action="AddCourse">Add Course</a>
+                <a id="Users" class="item" asp-controller="Auth" asp-action="GetAllUsers">Users</a>
+                <a id="Archive" class="item" asp-controller="Archive" asp-action="ArchivedCourses">Archived courses</a>
             }
 
             <a class="item" asp-controller="Auth" asp-action="Logout">Logout</a>
@@ -88,6 +89,7 @@
     <script>
         $('#toggle').click(function () {
             $('.ui.sidebar').sidebar('toggle');
+            $('#' + '@ViewBag.Title').addClass('active');
         });
         var decodeHTML = function (html) {
             var txt = document.createElement('textarea');

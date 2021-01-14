@@ -1,4 +1,8 @@
 ﻿@model CourseModel
+@{
+    ViewBag.Title = "Overview";
+}
+
 
 <div class="ui grid">
     <div class="sixteen wide column">
@@ -27,7 +31,7 @@
                     <input asp-for="EndDate" type="hidden" name="name" value="@Model.EndDate" />
                     <button class="ui left floated green button" type="submit">Delete</button>
                 </form>
-                    <a class="ui right floated red button" asp-controller="" asp-action="" asp-route-id="">Cancel</a>
+                <a class="ui right floated red button" asp-controller="" asp-action="" asp-route-id="">Cancel</a>
             </div>
         </div>
-</div>
+    </div>

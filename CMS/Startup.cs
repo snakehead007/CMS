@@ -40,6 +40,8 @@ namespace CMS
                 services.AddScoped<IUserRepository, UserRepository>();
                 services.AddScoped<IAttachmentRepository, AttachmentRepository>();
                 services.AddScoped<FileService>();
+                services.AddScoped<ArchiveRepository>();
+                services.AddHostedService<ArchiveService>();
                 services.AddHttpContextAccessor();
                 services.AddScoped<UserService>();
                 services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

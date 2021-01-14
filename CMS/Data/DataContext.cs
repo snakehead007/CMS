@@ -7,24 +7,27 @@ namespace CMS.Data
 {
     public class DataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
-        {}
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            ConfigureCourse(modelBuilder.Entity<Course>());
-            ConfigureSubject(modelBuilder.Entity<Subject>());
-            ConfigureUser(modelBuilder.Entity<User>());
-            ConfigureAttachment(modelBuilder.Entity<Attachment>());
-            ConfigureAttachmentVersion(modelBuilder.Entity<AttachmentVersion>());
-        }
-
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Attachment> Attachments { get; set; }
         public virtual DbSet<AttachmentVersion> AttachmentVersions { get; set; }
+        public virtual DbSet<CourseArchive> CourseArchive { get; set; }
+        public virtual DbSet<SubjectArchive> SubjectArchive { get; set; }
 
-        
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            ConfigureCourse(modelBuilder.Entity<Course>());
+            ConfigureSubject(modelBuilder.Entity<Subject>());
+            ConfigureUser(modelBuilder.Entity<User>());
+            ConfigureAttachment(modelBuilder.Entity<Attachment>());
+            ConfigureAttachmentVersion(modelBuilder.Entity<AttachmentVersion>());
+            ConfigureCourseArchive(modelBuilder.Entity<CourseArchive>());
+            ConfigureSubjectArchive(modelBuilder.Entity<SubjectArchive>());
+        }
         private void ConfigureCourse(EntityTypeBuilder<Course> course)
         {
             //dbo.Courses
@@ -63,6 +66,18 @@ namespace CMS.Data
             // dbo.AttachmentVersion
             attachmentVersion.ToTable("AttachmentVersions").HasKey(x => x.AttachmentVersionId);
             attachmentVersion.Property(x => x.AttachmentVersionId).UseIdentityColumn();
+        }
+        private void ConfigureCourseArchive(EntityTypeBuilder<CourseArchive> course)
+        {
+            course.ToTable("CourseArchive").HasKey(x => x.CourseId);
+            course.Property(x => x.CourseId).ValueGeneratedNever();
+            course.HasMany(x => x.Subjects);
+        }
+
+        private void ConfigureSubjectArchive(EntityTypeBuilder<SubjectArchive> subject)
+        {
+            subject.ToTable("SubjectArchive").HasKey(x => x.SubjectId);
+            subject.Property(x => x.SubjectId).ValueGeneratedNever();
         }
     }
 }
