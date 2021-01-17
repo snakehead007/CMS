@@ -2,10 +2,12 @@
 @{
     ViewData["Title"] = "Overview";
 }
-
+@section styles{ 
+    <link href="/css/home.css" rel="stylesheet" />
+}
 <div class="ui block header">
     Overview Courses
-    <div class="ui search">
+    <div id="search_box" class="ui search">
         <div class="ui icon input">
             <input id="search" class="prompt" type="search" placeholder="Search courses...">
             <i class="search icon"></i>

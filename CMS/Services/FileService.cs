@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting; 
+﻿using CMS.Interfaces.Repositories;
+using Microsoft.AspNetCore.Hosting; 
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CMS.Services
 {
-    public class FileService
+    public class FileService : IFileService
     {
         private const string Folder = "Files";
 

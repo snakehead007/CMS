@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - CMS</title>
     <link rel="stylesheet" href="~/lib/semantic/semantic.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    @RenderSection("Styles", required: false)
     <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -14,18 +15,18 @@
         <!-- empty for now, had to move sidebar out of it.-->
         <div id="messages"></div>
     </header>
-
+    @RenderSection("section", required: false)
     @if (User?.Identity?.IsAuthenticated ?? false)
     {
 
         <div class="ui sidebar inverted vertical menu">
 
-            <a class="active item" asp-controller="Home" asp-action="Index">Overview</a>
+            <a id="menuOverview" class="item" asp-controller="Home" asp-action="Index">Overview</a>
 
             @if (User.IsInRole("Admin"))
             {
-                <a class="item" asp-controller="Home" asp-action="AddCourse">Add Course</a>
-                <a class="item" asp-controller="Auth" asp-action="GetAllUsers">Users</a>
+                <a id="menuAddCourse" class="item" asp-controller="Home" asp-action="AddCourse">Add Course</a>
+                <a id="menuUsers" class="item" asp-controller="Auth" asp-action="GetAllUsers">Users</a>
             }
 
             <a class="item" asp-controller="Auth" asp-action="Logout">Logout</a>
@@ -69,7 +70,7 @@
          * param { string } color color of header
          * param {Number} timout_in_ms amount of time to wait before removing. put 0 to stay forever
          **/
-        const message = (message, header, color = "grey",timout_in_ms=3000) => {
+        const message = (message, header, color = "grey", timout_in_ms = 3000) => {
             const id = Date.now();
             $("#messages").append(`<div id="${id}"class="ui ${color} message"><div class="header">${header}</div><p>${message}</p></div>`)
             if (timout_in_ms != 0) {
@@ -81,6 +82,15 @@
             }
             return id;
         };
+        $(".sidebar .item").removeClass("active");
+        const p = window.location.pathname.split('/');
+        if (p.length >= 2 && p[1] === "") {
+            $("#menuOverview").addClass("active");
+        } else if (p.length >= 3 && p[2] === "AddCourse") {
+            $("#menuAddCourse").addClass("active");
+        } else if (p.length >= 3 && p[2] === "GetAllUsers") {
+            $("#menuUsers").addClass("active");
+        }
     </script>
     <script src="~/lib/semantic/semantic.js"></script>
     <script src="~/lib/microsoft-signalr/signalr.min.js"></script>

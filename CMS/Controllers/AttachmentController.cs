@@ -16,9 +16,9 @@ namespace CMS.Controllers
     public class AttachmentController : Controller
     {
         private readonly IAttachmentRepository _attachmentRepository;
-        private readonly FileService _fileService;
+        private readonly IFileService _fileService;
         private readonly ICourseRepository _courseRepository;
-        public AttachmentController(ICourseRepository courseRepository, FileService fileService, IAttachmentRepository attachmentRepository)
+        public AttachmentController(ICourseRepository courseRepository, IFileService fileService, IAttachmentRepository attachmentRepository)
         {
             _attachmentRepository = attachmentRepository;
             _fileService = fileService;
@@ -36,6 +36,10 @@ namespace CMS.Controllers
         [Authorize(Roles ="Admin,Lector")]
         public async Task<IActionResult> UploadAttachment(int subjectId, IFormFile file)
         {
+            if (file == null)
+            {
+                return BadRequest("No file was posted");
+            }
             string virtualPath = await _fileService.SaveFileAsync(file.FileName, file.OpenReadStream());
             var version = new AttachmentVersion
             {
