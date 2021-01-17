@@ -1,42 +1,46 @@
 ﻿@model SubjectOverviewViewModel
+@{
+    ViewBag.Title = "Overview";
+}
 
 @foreach (var subject in Model.Subjects)
 {
-<div id="@subject.SubjectId" class="ui segment">
-    <div class="ui header">@subject.Name</div>
-    <div class="description">@subject.Description</div>
-    @if (User.IsInRole("Admin") || User.IsInRole("Lector"))
-    {
-        <button class="ui button" onclick="startEdit(this)">Edit</button>
-    }
-    <h3 class="ui relaxed header">Attachments</h3>
-    <div class="ui relaxed dividend list">
-        @foreach (var attachment in subject.Attachments)
+    <div id="@subject.SubjectId" class="ui segment">
+        <div class="ui header">@subject.Name</div>
+        <div class="description">@subject.Description</div>
+        @if (User.IsInRole("Admin") || User.IsInRole("Lector"))
         {
-            <div class="item">
-                <i class="large file middle aligned icon"></i>
-                <div class="content">
-                    <a class="header" href="@Url.Action("ViewAttachment","Attachment")?attachmentId=@attachment.AttachmentId" class="header">@attachment.Name</a>
+            <button class="ui button" onclick="startEdit(this)">Edit</button>
+        }
+        <h3 class="ui relaxed header">Attachments</h3>
+        <div class="ui relaxed dividend list">
+            @foreach (var attachment in subject.Attachments)
+            {
+                <div class="item">
+                    <i class="large file middle aligned icon"></i>
+                    <div class="content">
+                        <a class="header" href="@Url.Action("ViewAttachment","Attachment")?attachmentId=@attachment.AttachmentId" class="header">@attachment.Name</a>
+                    </div>
                 </div>
-            </div>
+            }
+        </div>
+        @if (User.IsInRole("Admin") || User.IsInRole("Lector"))
+        {
+            <form asp-controller="Attachment" asp-action="uploadAttachment" enctype="multipart/form-data" method="post" class="ui action input">
+                <input type="hidden" name="subjectId" value="@subject.SubjectId" />
+                <input type="file" name="file" value="" />
+                <button class="ui button">upload</button>
+            </form>
         }
     </div>
-    @if (User.IsInRole("Admin") || User.IsInRole("Lector")) { 
-        <form asp-controller="Attachment" asp-action="uploadAttachment" enctype="multipart/form-data" method="post" class="ui action input">
-            <input type="hidden" name="subjectId" value="@subject.SubjectId" />
-            <input type="file" name="file" value="" />
-            <button class="ui button">upload</button>
-        </form>
-    }
-</div>
-    
+
     @if (User.IsInRole("Admin") || User.IsInRole("Lector"))
     {
         <template id="template_@subject.SubjectId">
             <label>Name</label>
-            <input id="name_@subject.SubjectId" type="text"value="@subject.Name" />  
+            <input id="name_@subject.SubjectId" type="text" value="@subject.Name" />
             <label>Description</label>
-            <input id="desc_@subject.SubjectId" type="text" value="@subject.Description"/>
+            <input id="desc_@subject.SubjectId" type="text" value="@subject.Description" />
             <button class="ui button" onclick="saveEdit(this)">Save</button>
             <button class="ui button" onclick="cancelEdit(this)">Cancel</button>
         </template>

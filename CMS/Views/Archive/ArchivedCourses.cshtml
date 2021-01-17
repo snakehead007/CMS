@@ -1,0 +1,63 @@
+﻿@model List<CourseModel>
+@{
+    ViewBag.Title = "Archive";
+}
+
+@using (@Html.BeginForm("ArchivedCourses", "Archive", FormMethod.Get, htmlAttributes: new { @class = "ui form" }))
+{
+    <b>Search By:</b>
+
+    <div class="inline fields">
+        <div class="field">
+            @Html.RadioButton("searchBy", "Name", true, htmlAttributes: new { @class = "ui radio checkbox" }) <text>Vak</text>
+        </div>
+
+        <div class="field">
+            @Html.RadioButton("searchBy", "Code", htmlAttributes: new { @class = "ui radio checkbox" }) <text>Code</text>
+        </div>
+
+        <div class="field">
+            @Html.RadioButton("searchBy", "Semester", htmlAttributes: new { @class = "ui radio checkbox" }) <text>Semester</text>
+        </div>
+
+        <div class="field">
+            <div class="ui small input">
+                @Html.TextBox("search")
+            </div>
+            <input type="submit" value="search" />
+        </div>
+    </div>
+}
+
+<table class="ui table">
+    <thead>
+        <tr>
+            <th>Vak</th>
+            <th>Code</th>
+            <th>Beschrijving</th>
+            <th>Semester</th>
+            <th>Startdatum</th>
+            <th>Einddatum</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count == 0) {
+            <tr>
+                <td colspan="6">Er is geen vak gevonden.</td>
+            </tr>
+        }
+        @foreach (var course in Model)
+        {
+
+            <tr>
+                <td>@course.Name</td>
+                <td>@course.Code</td>
+                <td>@course.Description</td>
+                <td>@course.Semester</td>
+                <td>@(course.StartDate?.ToString("dd-MM-yyyy")??"")</td>
+                <td>@(course.EndDate?.ToString("dd-MM-yyyy")??"")</td>
+            </tr>
+
+        }
+    </tbody>
+    </table>
