@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - CMS</title>
     <link rel="stylesheet" href="~/lib/semantic/semantic.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    @RenderSection("Styles", required: false)
     <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -14,7 +15,7 @@
         <!-- empty for now, had to move sidebar out of it.-->
         <div id="messages"></div>
     </header>
-
+    @RenderSection("section", required: false)
     @if (User?.Identity?.IsAuthenticated ?? false)
     {
 
@@ -70,7 +71,7 @@
          * param { string } color color of header
          * param {Number} timout_in_ms amount of time to wait before removing. put 0 to stay forever
          **/
-        const message = (message, header, color = "grey",timout_in_ms=3000) => {
+        const message = (message, header, color = "grey", timout_in_ms = 3000) => {
             const id = Date.now();
             $("#messages").append(`<div id="${id}"class="ui ${color} message"><div class="header">${header}</div><p>${message}</p></div>`)
             if (timout_in_ms != 0) {
@@ -82,6 +83,15 @@
             }
             return id;
         };
+        $(".sidebar .item").removeClass("active");
+        const p = window.location.pathname.split('/');
+        if (p.length >= 2 && p[1] === "") {
+            $("#menuOverview").addClass("active");
+        } else if (p.length >= 3 && p[2] === "AddCourse") {
+            $("#menuAddCourse").addClass("active");
+        } else if (p.length >= 3 && p[2] === "GetAllUsers") {
+            $("#menuUsers").addClass("active");
+        }
     </script>
     <script src="~/lib/semantic/semantic.js"></script>
     <script src="~/lib/microsoft-signalr/signalr.min.js"></script>

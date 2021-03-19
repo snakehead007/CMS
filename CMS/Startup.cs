@@ -39,6 +39,15 @@ namespace CMS
                 services.AddScoped<ICourseRepository, CourseRepository>();
                 services.AddScoped<IUserRepository, UserRepository>();
                 services.AddScoped<IAttachmentRepository, AttachmentRepository>();
+                if (Configuration.GetValue<bool>("UseBlobStorage"))
+                {
+                    //services.AddOptions<BlobServiceOptions>().Bind(Configuration.GetSection("BlobStorage"));
+                    services.AddScoped<IFileService, BlobService>();
+                }
+                else
+                {
+                    services.AddScoped<IFileService, FileService>();
+                }
                 services.AddScoped<FileService>();
                 services.AddScoped<ArchiveRepository>();
                 services.AddHostedService<ArchiveService>();
